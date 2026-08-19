@@ -565,10 +565,11 @@ setTimeout(()=>t.remove(),2000);
 init();
 </script>
 
-<!-- ===== 反馈回流器 v1.0（进化器官：使用数据记录 + 导出） ===== -->
-<div id="fbWidget" style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:system-ui">
-  <button id="fbToggle" onclick="fbPanel.style.display=fbPanel.style.display==='none'?'block':'none'" style="background:#1f6feb;color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)">反馈</button>
-  <div id="fbPanel" style="display:none;background:#fff;border-radius:12px;padding:14px;width:260px;box-shadow:0 4px 20px rgba(0,0,0,.2)">
+<!-- ===== 悬浮按钮坞：投币 + 反馈（进化器官：使用数据记录 + 导出） ===== -->
+<div id="fbDock" style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:system-ui;display:flex;gap:8px;align-items:center">
+  <button id="payBtn" onclick="document.getElementById('payCard').style.display='flex'" style="background:linear-gradient(135deg,#f0883e,#d29922);color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);font-size:13px;font-weight:600">💰 投币</button>
+  <button id="fbToggle" onclick="var p=document.getElementById('fbPanel');p.style.display=p.style.display==='none'?'block':'none'" style="background:#1f6feb;color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);font-size:13px;font-weight:600">💬 反馈</button>
+  <div id="fbPanel" style="display:none;position:absolute;bottom:48px;right:0;background:#fff;border-radius:12px;padding:14px;width:264px;box-shadow:0 4px 20px rgba(0,0,0,.25)">
     <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px">这次推演有用吗？</div>
     <div style="margin-bottom:8px">
       <button class="fb-rate" data-r="5" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">5 很有用</button>
@@ -584,6 +585,21 @@ init();
     </div>
     <div id="fbStatus" style="font-size:11px;color:#888;margin-top:6px"></div>
     <div style="font-size:11px;color:#999;margin-top:8px;line-height:1.5;border-top:1px solid #f0f0f0;padding-top:8px">你的每次反馈都在帮助这个引擎进化。提交后，你的使用数据将参与系统校准。</div>
+    <div style="margin-top:10px;border-top:1px solid #f0f0f0;padding-top:10px;text-align:center">
+      <div style="font-size:11px;color:#666;margin-bottom:6px">有功能建议或想直接聊？微信扫码找作者</div>
+      <img src="feedback.png" alt="微信反馈二维码" style="width:124px;border-radius:8px;border:1px solid #eee">
+    </div>
+  </div>
+</div>
+
+<!-- ===== 投币弹窗（收款码） ===== -->
+<div id="payCard" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fffdf7;border-radius:16px;padding:26px 24px 20px;max-width:320px;width:100%;text-align:center;font-family:system-ui;position:relative;box-shadow:0 16px 48px rgba(0,0,0,.4)">
+    <button onclick="document.getElementById('payCard').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:18px;color:#a29880;cursor:pointer;line-height:1">✕</button>
+    <h3 style="margin:0 0 6px;color:#8c2f23;font-size:17px;letter-spacing:1px">请作者喝杯咖啡</h3>
+    <p style="font-size:12px;color:#8a7f66;margin:0 0 14px;line-height:1.7">如果这个引擎帮到了你<br>欢迎投币支持它继续进化</p>
+    <img src="paycode.png" alt="收款码" style="width:220px;max-width:100%;border-radius:10px;border:1px solid #d9ceb2;box-shadow:0 4px 16px rgba(140,47,35,.12)">
+    <br><button onclick="document.getElementById('payCard').style.display='none'" style="margin-top:14px;padding:8px 26px;border-radius:999px;border:1px solid #d8cdb4;background:#f6f1e3;color:#5d543f;font-size:13px;cursor:pointer">关闭</button>
   </div>
 </div>
 <script>
