@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明引擎使用说明书 · 把千年文明的审美，变成你的设计风格</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:#2c2c2c; background:#faf9f6; line-height:1.8; }
+  .wrap { max-width:820px; margin:0 auto; padding:24px 20px 60px; }
+  header { text-align:center; padding:40px 0 30px; border-bottom:2px solid #e8e2d5; margin-bottom:34px; }
+  .badge { display:inline-block; font-size:12px; letter-spacing:3px; color:#8a7a55; border:1px solid #cbbf9e; border-radius:20px; padding:3px 14px; margin-bottom:16px; }
+  h1 { font-size:30px; font-weight:700; letter-spacing:1px; margin-bottom:10px; }
+  .subtitle { font-size:15px; color:#7a7263; }
+  h2 { font-size:21px; margin:44px 0 14px; padding-left:12px; border-left:4px solid #b08d3e; }
+  h3 { font-size:16px; margin:22px 0 8px; color:#5a4f3a; }
+  p { margin:10px 0; font-size:15px; }
+  .card { background:#fff; border:1px solid #ece6d8; border-radius:12px; padding:20px 22px; margin:16px 0; box-shadow:0 1px 4px rgba(90,79,58,.05); }
+  .tip { background:#f6f1e4; border-left:4px solid #b08d3e; border-radius:8px; padding:12px 16px; margin:14px 0; font-size:14px; }
+  .tip b { color:#8a6d2f; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+  th, td { border:1px solid #e8e2d5; padding:9px 10px; text-align:left; vertical-align:top; }
+  th { background:#f3eee0; font-weight:600; white-space:nowrap; }
+  .steps { counter-reset:step; }
+  .step { display:flex; gap:14px; margin:18px 0; }
+  .step-num { flex-shrink:0; width:34px; height:34px; border-radius:50%; background:#b08d3e; color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .step-body b { display:block; margin-bottom:4px; font-size:15px; }
+  .step-body span { font-size:14px; color:#5f5744; }
+  .case { border:1px solid #ece6d8; border-radius:12px; overflow:hidden; margin:20px 0; background:#fff; }
+  .case-head { background:linear-gradient(135deg,#3d3425,#6b5b3a); color:#f5efdf; padding:14px 20px; }
+  .case-head .case-tag { font-size:12px; opacity:.85; letter-spacing:2px; display:block; margin-bottom:4px; }
+  .case-head b { font-size:17px; }
+  .case-body { padding:18px 20px; }
+  .case-row { display:flex; gap:10px; margin:8px 0; font-size:14px; }
+  .case-row .k { flex-shrink:0; width:74px; font-weight:600; color:#8a6d2f; }
+  .prompt-box { background:#2d2a24; color:#e8dfc8; border-radius:8px; padding:12px 14px; font-size:13px; font-family:Consolas,monospace; margin:10px 0; line-height:1.7; word-break:break-all; }
+  .out-list { margin:6px 0 6px 18px; font-size:14px; color:#4a4335; }
+  .out-list li { margin:4px 0; }
+  footer { text-align:center; margin-top:50px; padding-top:20px; border-top:1px solid #e8e2d5; font-size:13px; color:#9a917d; }
+  .force-color { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:1px; }
+  @media print { body{background:#fff} .card,.case{box-shadow:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="badge">CIVILIZATION ENGINE · 文明引擎</div>
+  <h1>使用说明书</h1>
+  <p class="subtitle">把人类六大文明的审美基因，变成你的「风格军师」<br>不需要懂 AI，会用手机就会用</p>
+  <p style="margin-top:18px"><a href="index.html" style="display:inline-block;background:#b08d3e;color:#fff;text-decoration:none;border-radius:24px;padding:10px 30px;font-size:15px;font-weight:600">立即打开引擎 →</a></p>
+</header>
+
+<!-- ========== 一句话 ========== -->
+<h2>一、这是什么？</h2>
+<p><b>文明引擎是一台「风格推演机」。</b></p>
+<p>你告诉它你要做什么（比如"我想给我的茶叶店做一套包装"），再拨动几个滑杆表达你的偏好，它就会在 3 秒内给你一份完整的<b>风格方案</b>：从整体气质、到灯光、构图、颜色、材质、节奏的每一个具体建议，外加一段可以直接复制粘贴的「AI 绘图咒语」。</p>
+<p>它背后的原理很简单：设计师们常说"这个设计有东方味""这个很美式"。文明引擎把人类几千年的审美归纳成了<b>六种文明气质</b>，你按比例混合它们，就能得到属于你的独特风格——就像调一杯鸡尾酒。</p>
+
+<div class="tip"><b>它不生成图片，它生成"指挥 AI 画图的图纸"。</b>你拿到的方案既可以直接指导设计师和摄影师干活，也可以把那段咒语粘贴到即梦、豆包、Canva、Midjourney 等 AI 绘图工具里，让 AI 按你的风格出图。</div>
+
+<!-- ========== 六大力场 ========== -->
+<h2>二、六种文明气质（这是你唯一需要理解的概念）</h2>
+<p>每个气质都来自真实的文明生存环境，不是凭空编的风格词。拖动滑杆就是在决定"你的品牌里掺多少这种气质"。</p>
+<table>
+  <tr><th>气质</th><th>一句话感受</th><th>像什么</th></tr>
+  <tr><td><span class="force-color" style="background:#7a9e7e"></span><b>平衡共生</b></td><td>和谐、留白、温润、不争</td><td>宋代的茶盏、无印良品、日式庭院</td></tr>
+  <tr><td><span class="force-color" style="background:#b08d3e"></span><b>超越秩序</b></td><td>庄严、仪式感、高级、距离感</td><td>故宫、爱马仕、奢侈品橱窗</td></tr>
+  <tr><td><span class="force-color" style="background:#4a7fa5"></span><b>认知解构</b></td><td>理性、冷静、功能至上</td><td>苹果官网、包豪斯、科技公司展厅</td></tr>
+  <tr><td><span class="force-color" style="background:#c25450"></span><b>主体突破</b></td><td>大胆、张扬、打破规则</td><td>耐克海报、街头潮牌、音乐节视觉</td></tr>
+  <tr><td><span class="force-color" style="background:#8a6d4a"></span><b>生命循环</b></td><td>自然、野性、原始、治愈</td><td>雨林民宿、大地色陶器、露营品牌</td></tr>
+  <tr><td><span class="force-color" style="background:#6d6d7d"></span><b>内观超越</b></td><td>空寂、极简、安静、灰调</td><td>禅室、性冷淡风、美术馆白盒子</td></tr>
+</table>
+<div class="tip"><b>不会调？直接用内置预设。</b>页面里准备了「宋式清雅茶」「科技极简」「先锋潮流」「北欧自然有机」等 10 套现成配方，点一下就填好滑杆。</div>
+
+<!-- ========== 怎么用 ========== -->
+<h2>三、怎么用？（三步，共 1 分钟）</h2>
+<div class="steps">
+  <div class="step"><div class="step-num">1</div><div class="step-body"><b>写下你要做的事</b><span>一句话就够：「高山古树普洱茶品牌视觉」「手工银器产品拍摄」「我的小红书封面」。越具体，建议越准。</span></div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-body"><b>拨滑杆，调出你的气质配方</b><span>给喜欢的气质加数值（总和不必是 100，引擎会自动换算）。例：平衡共生 70 + 生命循环 30 = "七分东方雅、三分山野气"。懒得调就点预设。</span></div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-body"><b>选场景 → 点推演</b><span>告诉引擎这是「品牌视觉 / 空间设计 / 产品摄影 / 内容创作」中的哪一种，再选预算档位和目标（好看 / 卖货 / 让人记住），点推演按钮。</span></div></div>
+</div>
+
+<!-- ========== 得到什么 ========== -->
+<h2>四、你会得到什么？（输出的四样东西）</h2>
+<div class="card">
+  <h3>① 一份九层风格报告</h3>
+  <p style="font-size:14px">从底层到落地共九层，普通人只需重点看三层：</p>
+  <ul class="out-list">
+    <li><b>心理基调</b>（L6）：你的品牌该给人什么感觉，一句话说清</li>
+    <li><b>审美参数</b>（L7）：灯光、构图、色彩、材质、节奏五个维度的具体 Top3 建议，每条都带「为什么」的解释</li>
+    <li><b>执行基线</b>（L8）：摄影师/设计师能直接照着干的技术参数</li>
+  </ul>
+  <h3>② 一段「AI 绘图咒语」（Prompt）</h3>
+  <p style="font-size:14px">由引擎自动写好的英文指令。复制它 → 打开即梦 / 豆包 / Midjourney 等任何 AI 绘图工具 → 粘贴 → 出图。这就是"不会写提示词的人"用 AI 出好图的捷径。</p>
+  <h3>③ 贴合你预算的执行建议</h3>
+  <p style="font-size:14px">选了"低预算"，它会告诉你：用窗口自然光代替打光灯、背景用一面白墙、后期用免费 App 调色。不画饼，给当下就能做的事。</p>
+  <h3>④ 一份给设计师的沟通文档</h3>
+  <p style="font-size:14px">把整个页面发给你的设计师，比口头说"我想要高级一点的感觉"高效十倍。</p>
+</div>
+
+<!-- ========== 案例 ========== -->
+<h2>五、三个真实案例</h2>
+
+<div class="case">
+  <div class="case-head"><span class="case-tag">案例一 · 品牌视觉</span><b>高山古树普洱茶，想做出区别于"爸爸茶"的年轻高级感</b></div>
+  <div class="case-body">
+    <div class="case-row"><div class="k">配方</div><div>平衡共生 70 · 生命循环 15 · 内观超越 15（即预设「宋式清雅茶」）</div></div>
+    <div class="case-row"><div class="k">输入</div><div>命题「高山古树普洱茶品牌视觉」· 场景「品牌视觉」· 目标「让人记住」</div></div>
+    <div class="case-row"><div class="k">得到</div><div>
+      <ul class="out-list">
+        <li>心理基调：沉静、悠远、温润、清雅 —— 一句话定调</li>
+        <li>色彩首选：低饱和中性调和 + 自然原生色系（不是俗气的红金礼盒）</li>
+        <li>材质首选：原生温润、肌理自然（棉纸、原木、粗陶，而不是烫金硬盒）</li>
+        <li>构图首选：留白、呼吸感 —— 包装上敢留白，反而贵</li>
+        <li>记忆点建议：从基调中提炼一个可复用的符号元素，全渠道重复</li>
+      </ul>
+    </div></div>
+    <div class="case-row"><div class="k">AI 咒语</div></div>
+    <div class="prompt-box">brand visual design, 高山古树普洱茶, 漫射柔光、均匀布光, 留白、呼吸感、对称平衡, 低饱和、中性调和、自然原生色系, 原生温润、肌理自然材质, mood: 沉静、悠远、松弛、温润、清雅…</div>
+    <p style="font-size:13px;color:#7a7263">→ 粘贴到 AI 绘图工具，几秒钟得到符合这个调性的包装设计参考图。</p>
+  </div>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="case-tag">案例二 · 产品摄影（低预算）</span><b>手工银器工作室，只有手机和自然光，但照片要能带货</b></div>
+  <div class="case-body">
+    <div class="case-row"><div class="k">配方</div><div>主体突破 60 · 生命循环 40 —— 六分先锋张力、四分手作温度</div></div>
+    <div class="case-row"><div class="k">输入</div><div>命题「手工银器工作室的产品摄影」· 场景「产品摄影」· 预算「低（手机+自然光）」· 目标「卖货」</div></div>
+    <div class="case-row"><div class="k">得到</div><div>
+      <ul class="out-list">
+        <li>灯光方向：创意光效/侧光制造戏剧感 + 自然光保住手作质感</li>
+        <li>构图方向：对角线、不对称 —— 银器斜放比端正摆放更抓眼</li>
+        <li>转化建议（因为目标是卖货）：主体占比提高、构图向中心聚拢、颜色降低干扰</li>
+        <li>低预算落地方案：窗口自然光替代布光、纯色布背景、道具只留一件材质代表物、Snapseed 免费调色</li>
+      </ul>
+    </div></div>
+    <p style="font-size:13px;color:#7a7263">→ 一个人的工作室，用手机也拍出了"有品牌感"的产品图。</p>
+  </div>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="case-tag">案例三 · 空间设计（高预算）</span><b>西双版纳雨林咖啡馆，不想做成千篇一律的网红店</b></div>
+  <div class="case-body">
+    <div class="case-row"><div class="k">配方</div><div>平衡共生 40 · 生命循环 40 · 内观超越 20 —— 一半东方雅、一半雨林野、两分禅意静</div></div>
+    <div class="case-row"><div class="k">输入</div><div>命题「西双版纳雨林咖啡馆室内空间设计」· 场景「空间设计」· 预算「高」· 目标「好看」</div></div>
+    <div class="case-row"><div class="k">得到</div><div>
+      <ul class="out-list">
+        <li>空间逻辑：虚实相生、边界柔和、自然错落 —— 动线不做直来直往</li>
+        <li>光照组合：自然漫射光打底 + 暗调柔光区制造静谧角落</li>
+        <li>材质清单：原生自然材质、粗糙肌理（藤编、老木、夯土）+ 素净通透点缀</li>
+        <li>色彩体系：大地色、草木色为主，极低饱和素色收尾</li>
+        <li>节奏：舒缓、无剧烈跳动 —— 客人坐下来就不想走</li>
+      </ul>
+    </div></div>
+    <p style="font-size:13px;color:#7a7263">→ 把这一页发给室内设计师，比开三次需求会都清楚。</p>
+  </div>
+</div>
+
+<!-- ========== 适合谁 ========== -->
+<h2>六、它适合谁？</h2>
+<table>
+  <tr><th>你是…</th><th>它能帮你…</th></tr>
+  <tr><td>开店的 / 做品牌的</td><td>不用请策划公司，先免费摸清自己的风格定位</td></tr>
+  <tr><td>要拍照卖货的</td><td>直接得到布光、构图、调色的可执行清单</td></tr>
+  <tr><td>和设计师合作的</td><td>给出一份双方都看得懂的需求文档，减少返工</td></tr>
+  <tr><td>想玩 AI 绘图但不会写提示词的</td><td>复制引擎写好的咒语，粘贴即出图</td></tr>
+  <tr><td>内容创作者</td><td>锁定统一的视觉人设，主页看起来"专业"</td></tr>
+</table>
+
+<!-- ========== FAQ ========== -->
+<h2>七、常见问题</h2>
+<div class="card">
+  <h3>Q：我完全不懂 AI，能用吗？</h3>
+  <p style="font-size:14px">能。它就是一个网页，会拨滑杆、会点按钮就会用。全程不需要注册、不需要下载、不收费。</p>
+  <h3>Q：那段英文咒语怎么用？</h3>
+  <p style="font-size:14px">推演完成后，长按复制那段 Prompt → 打开即梦、豆包、文心一格、Canva 或 Midjourney → 粘贴在输入框 → 生成。AI 会按你配方里的风格出图。</p>
+  <h3>Q：配方调坏了怎么办？</h3>
+  <p style="font-size:14px">调坏了再调，没有成本。引擎底部有「置信度」提示：分数低说明配方太散，明确一个主导气质就好。</p>
+  <h3>Q：它说的建议靠谱吗？</h3>
+  <p style="font-size:14px">每条建议都附带「为什么」——从文明起源推导到这条审美建议的完整逻辑链。你可以不同意它，但它绝不故弄玄虚。</p>
+  <h3>Q：用了觉得好/不好，去哪说？</h3>
+  <p style="font-size:14px">右下角「反馈」按钮。你的每一条反馈都会参与引擎的下一版进化——你不是在用工具，你是在参与建造它。</p>
+</div>
+
+<footer>
+  Civilization Engine · 文明引擎 v1.0.2<br>
+  开源地址：github.com/renchenrui7-eng/civilization-engine
+</footer>
+
+</div>
+</body>
+</html>
