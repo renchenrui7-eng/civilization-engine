@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SERVER_NAME = 'civilization-engine';
-const SERVER_VERSION = '1.0.0';
+const SERVER_VERSION = '1.0.2';
 const LOG_DIR = __dirname;
 
 // ---------- 引擎数据：六大文明力场 ----------
@@ -170,13 +170,14 @@ function civBlend(params) {
   }
   const l7Detail = {};
   for (const dim of DIM_KEYS) {
+    const maxScore = blend[dim].length ? (blend[dim][0].score || 1) : 1; // 维度内最高分作基准
     l7Detail[dim] = blend[dim].map(e => ({
       text: e.text, score: e.score, source: e.source, isVariant: e.isVariant,
-      confidence: Math.min(99, Math.round(e.score * 100)),
+      confidence: Math.max(1, Math.min(99, Math.round((e.score / maxScore) * 100))),
       chain: chainFor(FORCES.find(f => f.name === e.source), dim),
     }));
   }
-  layers.push({ layer: 'L7', name: LAYER_NAMES[7], dominant: dominant.force.name, dimensions: l7Detail, why: '概率混合算法：score = 力场权重 × (倾向概率dp/100)，Top3 保留，变体按 vp 概率进入' });
+  layers.push({ layer: 'L7', name: LAYER_NAMES[7], dominant: dominant.force.name, dimensions: l7Detail, why: '概率混合算法：score = 力场权重 × (倾向概率dp/100)，Top3 保留，变体按 vp 概率进入；confidence = 条目 score 相对维度最高分的比值（维度内领跑者 99）' });
   layers.push({
     layer: 'L8', name: LAYER_NAMES[8], dominant: dominant.force.name,
     content: dominant.force.L8,
