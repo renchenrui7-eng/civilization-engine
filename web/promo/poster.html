@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>文明引擎 · 宣传长图</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:750px; font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif; background:#0d1117; color:#e6edf3; margin:0 auto; }
+  .wrap { width:750px; overflow:hidden; }
+
+  /* ===== HERO ===== */
+  .hero { background:linear-gradient(160deg,#1a2233 0%,#0d1117 55%,#141005 100%); padding:70px 48px 56px; text-align:center; position:relative; }
+  .hero .kicker { display:inline-block; font-size:15px; letter-spacing:6px; color:#d2a8ff; border:1px solid rgba(210,168,255,.4); border-radius:999px; padding:7px 22px 7px 28px; margin-bottom:30px; }
+  .hero h1 { font-size:88px; letter-spacing:14px; font-weight:800; background:linear-gradient(180deg,#f5e6b8,#d4af37); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:14px; }
+  .hero .en { font-size:17px; letter-spacing:10px; color:#8b949e; margin-bottom:34px; }
+  .hero .slogan { font-size:30px; font-weight:700; line-height:1.55; }
+  .hero .slogan em { font-style:normal; color:#d4af37; }
+  .hero .pain { margin-top:30px; font-size:20px; color:#8b949e; line-height:1.8; }
+  .hero .pain b { color:#f0883e; font-weight:600; }
+
+  /* ===== 通用节 ===== */
+  .sec { padding:52px 48px; }
+  .sec-title { text-align:center; margin-bottom:36px; }
+  .sec-title .num { font-size:15px; letter-spacing:4px; color:#d4af37; margin-bottom:10px; }
+  .sec-title h2 { font-size:40px; font-weight:800; letter-spacing:3px; }
+  .sec-title p { font-size:17px; color:#8b949e; margin-top:10px; }
+
+  /* 六力场 */
+  .forces { display:flex; flex-wrap:wrap; gap:14px; }
+  .force { width:calc(50% - 7px); background:#161b22; border:1px solid #30363d; border-radius:14px; padding:20px 20px 18px; }
+  .force .tag { display:inline-block; font-size:13px; font-weight:700; color:#0d1117; border-radius:6px; padding:3px 10px; margin-bottom:10px; }
+  .force h3 { font-size:23px; font-weight:700; margin-bottom:8px; }
+  .force p { font-size:15px; color:#8b949e; line-height:1.65; }
+  .force .like { margin-top:10px; font-size:14px; color:#d4af37; }
+
+  /* 三步 */
+  .steps { display:flex; flex-direction:column; gap:14px; }
+  .step { display:flex; align-items:center; gap:20px; background:#161b22; border:1px solid #30363d; border-radius:14px; padding:22px 24px; }
+  .step .n { flex:none; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#d4af37,#8a6d1f); color:#0d1117; font-size:26px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .step h3 { font-size:22px; font-weight:700; margin-bottom:5px; }
+  .step p { font-size:15px; color:#8b949e; line-height:1.6; }
+
+  /* 四样产出 */
+  .outputs { display:flex; flex-wrap:wrap; gap:14px; }
+  .out { width:calc(50% - 7px); background:linear-gradient(160deg,#161b22,#11151c); border:1px solid #30363d; border-left:4px solid #d4af37; border-radius:12px; padding:18px 18px 16px; }
+  .out h3 { font-size:19px; font-weight:700; margin-bottom:7px; }
+  .out p { font-size:14px; color:#8b949e; line-height:1.6; }
+
+  /* 案例 */
+  .cases { display:flex; flex-direction:column; gap:16px; }
+  .case { background:#161b22; border:1px solid #30363d; border-radius:14px; padding:24px; }
+  .case .head { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .case .badge { font-size:13px; font-weight:700; border-radius:6px; padding:3px 10px; }
+  .case h3 { font-size:21px; font-weight:700; }
+  .case .ask { font-size:15px; color:#8b949e; margin-bottom:10px; }
+  .case .ask b { color:#e6edf3; font-weight:600; }
+  .case .ans { font-size:15.5px; line-height:1.7; color:#cdb98a; }
+  .case .ans b { color:#d4af37; }
+
+  /* 适合谁 */
+  .who { display:flex; flex-wrap:wrap; gap:12px; }
+  .who .chip { background:#161b22; border:1px solid #30363d; border-radius:999px; padding:12px 24px; font-size:17px; }
+  .who .chip b { color:#d4af37; font-weight:700; margin-right:6px; }
+
+  /* 底部 */
+  .cta { background:linear-gradient(180deg,#141005,#1a1408); border-top:2px solid #d4af37; padding:56px 48px 48px; text-align:center; }
+  .cta h2 { font-size:38px; font-weight:800; letter-spacing:2px; margin-bottom:12px; }
+  .cta h2 span { color:#d4af37; }
+  .cta .free { font-size:19px; color:#cdb98a; margin-bottom:8px; }
+  .cta .free b { color:#d4af37; }
+  .cta .qrbox { margin:30px auto 0; width:300px; background:#fdf7ea; border-radius:18px; padding:18px; }
+  .cta .qrbox img { width:264px; height:264px; display:block; }
+  .cta .scan { margin-top:16px; font-size:16px; color:#8a7f66; }
+  .cta .meta { margin-top:30px; font-size:14px; color:#6e5f3e; line-height:1.9; }
+  .divider { height:1px; background:linear-gradient(90deg,transparent,#30363d,transparent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">CIVILIZATION ENGINE</div>
+    <h1>文明引擎</h1>
+    <div class="en">把六大文明的审美基因，装进口袋</div>
+    <div class="slogan">不会写提示词？<br>让<em>五千年审美</em>替你想</div>
+    <div class="pain">想让 AI 出图，却只会说「高级一点」「大气一点」？<br><b>你缺的不是 AI，是一套说得出口的风格语言。</b></div>
+  </div>
+
+  <!-- 六力场 -->
+  <div class="sec">
+    <div class="sec-title">
+      <div class="num">— 01 —</div>
+      <h2>六种文明气质</h2>
+      <p>你只需要认识这 6 个词，剩下的引擎替你推演</p>
+    </div>
+    <div class="forces">
+      <div class="force">
+        <span class="tag" style="background:#3fb950">平衡共生</span>
+        <h3>安静的高级感</h3>
+        <p>留白、克制、少即是多。让东西自己说话。</p>
+        <div class="like">像：宋代茶盏 · 无印良品</div>
+      </div>
+      <div class="force">
+        <span class="tag" style="background:#ff7b72">主体突破</span>
+        <h3>一眼记住你</h3>
+        <p>打破常规、制造冲突。人群里最先被看见的那个。</p>
+        <div class="like">像：耐克海报 · 街头潮牌</div>
+      </div>
+      <div class="force">
+        <span class="tag" style="background:#58a6ff">理性秩序</span>
+        <h3>科技的信任感</h3>
+        <p>网格、系统、精密。看起来就很可靠。</p>
+        <div class="like">像：苹果官网 · 德国工业设计</div>
+      </div>
+      <div class="force">
+        <span class="tag" style="background:#d2a8ff">华丽叙事</span>
+        <h3>故事感拉满</h3>
+        <p>繁复、细节、仪式感。像一件传家宝。</p>
+        <div class="like">像：故宫文创 · 巴洛克宫殿</div>
+      </div>
+      <div class="force">
+        <span class="tag" style="background:#f0883e">手工温度</span>
+        <h3>人的痕迹</h3>
+        <p>不完美、有指纹、有故事。机器复制不了的暖。</p>
+        <div class="like">像：手作陶器 · 傣族织锦</div>
+      </div>
+      <div class="force">
+        <span class="tag" style="background:#39d0d8">生命循环</span>
+        <h3>自然的呼吸</h3>
+        <p>生长、再生、与万物共处。可持续的时髦。</p>
+        <div class="like">像：雨林咖啡馆 · 再生材料</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 三步 -->
+  <div class="sec">
+    <div class="sec-title">
+      <div class="num">— 02 —</div>
+      <h2>三步出方案</h2>
+      <p>全程 1 分钟，不需要懂任何 AI 知识</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>选气质</h3>
+          <p>拖动滑块，调出你想要的感觉。懒得调？直接点预设。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>说命题</h3>
+          <p>一句话写下你要做的事：「普洱茶的品牌视觉」「银器产品图」。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>拿方案</h3>
+          <p>引擎推演出九层审美方案：光线、构图、色彩、材质……一层层替你定好。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 四样产出 -->
+  <div class="sec">
+    <div class="sec-title">
+      <div class="num">— 03 —</div>
+      <h2>你会得到什么</h2>
+      <p>四样产出，各有各的用法</p>
+    </div>
+    <div class="outputs">
+      <div class="out">
+        <h3>📋 九层风格报告</h3>
+        <p>从光线到叙事的完整审美方案。重点看 L4 色彩、L5 材质、L7 执行参数三层。</p>
+      </div>
+      <div class="out">
+        <h3>🪄 AI 咒语（Prompt）</h3>
+        <p>复制粘贴到即梦、豆包、Midjourney，直接生成符合方案的图。</p>
+      </div>
+      <div class="out">
+        <h3>💰 预算内执行建议</h3>
+        <p>低预算有低预算的拍法。手机 + 自然光也能出高级感，方案会告诉你怎么做。</p>
+      </div>
+      <div class="out">
+        <h3>🤝 设计师沟通文档</h3>
+        <p>把报告发给设计师，减少来回改稿——你要的「感觉」终于说得清了。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 案例 -->
+  <div class="sec">
+    <div class="sec-title">
+      <div class="num">— 04 —</div>
+      <h2>三个真实推演案例</h2>
+      <p>全部来自引擎真实输出，不是编的</p>
+    </div>
+    <div class="cases">
+      <div class="case">
+        <div class="head">
+          <span class="badge" style="background:#3fb950;color:#0d1117">品牌视觉</span>
+          <h3>普洱茶想做年轻人的生意</h3>
+        </div>
+        <div class="ask">命题：<b>既要传统底蕴，又要年轻高级感</b>　配比：平衡共生 70</div>
+        <div class="ans">引擎结论：<b>不做「老茶庄」，做「宋代极简 × 现代茶饮」</b>——大量留白、克制的暖灰底色、竖排书法字点缀。像茶里的「无印良品」。</div>
+      </div>
+      <div class="case">
+        <div class="head">
+          <span class="badge" style="background:#ff7b72;color:#0d1117">产品摄影</span>
+          <h3>手工银器，手机拍摄也要能带货</h3>
+        </div>
+        <div class="ask">命题：<b>低预算，主体突破 60 + 手工温度 40</b>　场景：产品图 / 转化优先</div>
+        <div class="ans">引擎结论：<b>「粗砺背景 + 精工主体」的对比拍法</b>——银器放糙面麻布上，自然窗光侧打，突出手工錾刻细节。手机也能拍，核心是对比。</div>
+      </div>
+      <div class="case">
+        <div class="head">
+          <span class="badge" style="background:#39d0d8;color:#0d1117">空间设计</span>
+          <h3>雨林咖啡馆，不做网红店</h3>
+        </div>
+        <div class="ask">命题：<b>高预算，雨林气质但拒绝俗气绿植墙</b>　配比：平衡 40 / 手工 40 / 循环 20</div>
+        <div class="ans">引擎结论：<b>「借雨林，不搬雨林」</b>——保留原始结构原木，藤编 + 粗陶 + 局部苔藓微景观，光线做「树冠下的斑驳」。客人感觉坐在林子里，而不是绿植展销会。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 适合谁 -->
+  <div class="sec">
+    <div class="sec-title">
+      <div class="num">— 05 —</div>
+      <h2>它适合谁</h2>
+    </div>
+    <div class="who">
+      <div class="chip"><b>小店主</b>自己拍产品图</div>
+      <div class="chip"><b>主理人</b>想清楚品牌调性</div>
+      <div class="chip"><b>自媒体</b>配图要有辨识度</div>
+      <div class="chip"><b>设计师</b>需要快速起风格草案</div>
+      <div class="chip"><b>普通玩家</b>想让 AI 出图更好看</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>你的审美<span>军师</span>，扫码即用</h2>
+    <div class="free">免费 · 免注册 · 免下载，手机扫码直接玩</div>
+    <div class="qrbox">
+      <img src="qr.png" alt="扫码打开文明引擎">
+    </div>
+    <div class="scan">扫码 → 先看 1 分钟说明书 → 开始推演</div>
+    <div class="meta">
+      Civilization Engine · 文明引擎 v1.0.2 · 开源项目<br>
+      github.com/renchenrui7-eng/civilization-engine<br>
+      觉得好用？页内可投币请作者喝咖啡 ☕ 你的每条反馈都在训练它进化
+    </div>
+  </div>
+
+</div>
+<script>document.body.setAttribute('data-height', document.body.scrollHeight);</script>
+</body>
+</html>
