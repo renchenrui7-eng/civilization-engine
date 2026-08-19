@@ -139,7 +139,9 @@ function buildPrompt(active, blend, prop, useCase) {
 }
 
 function civBlend(params) {
-  const weights = normalizeWeights(params.weights || {});
+  let rawW = params.weights || {};
+  if (rawW.weights && typeof rawW.weights === 'object') rawW = rawW.weights; // 兼容客户端按嵌套 schema 传参
+  const weights = normalizeWeights(rawW);
   if (!weights) return { error: 'weights 无效：至少一个力场权重大于 0（如 {F01:70, F05:15, F06:15}）' };
   const prop = params.proposition || '未指定命题';
   const useCase = USE_CASES[params.use_case] ? params.use_case : 'brand_visual';
@@ -224,7 +226,7 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        weights: { type: 'object', description: '力场权重，如 {"F01":70,"F05":15,"F06":15}。F01平衡共生 F02超越秩序 F03认知解构 F04主体突破 F05生命循环 F06内观超越。自动归一化。', required: ['weights'] },
+        weights: { type: 'object', description: '力场权重，如 {"F01":70,"F05":15,"F06":15}。F01平衡共生 F02超越秩序 F03认知解构 F04主体突破 F05生命循环 F06内观超越。自动归一化。' },
         proposition: { type: 'string', description: '创作命题，如"高山古树普洱茶品牌视觉"' },
         use_case: { type: 'string', enum: ['brand_visual', 'space_design', 'product_photo', 'content_creation'], description: '使用场景（默认 brand_visual）' },
         resource_level: { type: 'string', enum: ['low', 'medium', 'high'], description: '资源约束（默认 medium）' },
