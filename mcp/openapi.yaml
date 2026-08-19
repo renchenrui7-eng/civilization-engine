@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: Civilization Engine API
+  description: 文明引擎九层推演 API。输入六大文明力场权重与创作命题（可选约束条件），输出带因果链的九层推演结果、融合 Prompt、Why-Layer 解释与执行建议。本 schema 描述 MCP server 中 civ_blend 工具的等价 HTTP 接口契约，可直接导入 GPTs / DeepSeek 等支持 OpenAPI 工具调用的客户端。
+  version: 1.0.0
+servers:
+  - url: http://localhost:5177
+    description: 本地部署（对应 mcp/server.js 的 civ_blend 逻辑）
+paths:
+  /civ_blend:
+    post:
+      summary: 九层推演
+      description: 核心接口。权重自动归一化；至少一个力场权重大于 0。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [weights]
+              properties:
+                weights:
+                  type: object
+                  description: 力场权重，键为 F01-F06
+                  properties:
+                    F01: { type: number, description: 平衡共生力场权重 }
+                    F02: { type: number, description: 超越秩序力场权重 }
+                    F03: { type: number, description: 认知解构力场权重 }
+                    F04: { type: number, description: 主体突破力场权重 }
+                    F05: { type: number, description: 生命循环力场权重 }
+                    F06: { type: number, description: 内观超越力场权重 }
+                proposition:
+                  type: string
+                  description: 创作命题，如"高山古树普洱茶品牌视觉"
+                use_case:
+                  type: string
+                  enum: [brand_visual, space_design, product_photo, content_creation]
+                  description: 使用场景（默认 brand_visual）
+                resource_level:
+                  type: string
+                  enum: [low, medium, high]
+                  description: 资源约束（默认 medium）
+                goal:
+                  type: string
+                  enum: [conversion, aesthetic, recognition]
+                  description: 目标（默认 aesthetic）
+      responses:
+        '200':
+          description: 推演结果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nine_layers:
+                    type: array
+                    description: 九层推演，每层含 content / why 因果链；L7 含五维度 Top3（text/score/confidence/chain）
+                  prompt: { type: string, description: 融合生成 Prompt }
+                  why_layer:
+                    type: object
+                    description: 主导逻辑解释（dominant / structure / variantHint / operators）
+                  constraints:
+                    type: object
+                    description: 约束条件下的执行建议（use_case / resource_level / goal）
+                  confidence:
+                    type: object
+                    description: 置信度（前两大力场合计权重）
+  /civ_forces:
+    get:
+      summary: 查询力场知识库
+      parameters:
+        - in: query
+          name: force_id
+          schema: { type: string, enum: [F01, F02, F03, F04, F05, F06] }
+          description: 不传返回全部六力场概览
+      responses:
+        '200': { description: 力场定义 }
+  /civ_presets:
+    get:
+      summary: 查询内置预设
+      responses:
+        '200': { description: 预设列表（可直接用于 civ_blend 的权重） }
+  /civ_feedback:
+    post:
+      summary: 反馈回流
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating]
+              properties:
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                comment: { type: string }
+                context: { type: string }
+      responses:
+        '200': { description: 已记录 }

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明混搭实验室 · Civilization Mixing Lab</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2330;--border:#30363d;--txt:#e6edf3;--txt2:#8b949e;--txt3:#6e7681;--blue:#58a6ff;--green:#3fb950;--amber:#f0883e;--purple:#a371f7;--red:#ff7b72;--teal:#39d0d8;--lav:#d2a8ff}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden}
+.header{background:linear-gradient(135deg,#161b22,#0d1117);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header h1{font-size:18px;font-weight:600}
+.header .sub{font-size:12px;color:var(--txt2);margin-left:8px}
+.header .badge{background:var(--amber);color:#000;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.main{display:flex;gap:0;min-height:calc(100vh - 57px)}
+.left{width:300px;min-width:300px;border-right:1px solid var(--border);padding:16px;overflow-y:auto;max-height:calc(100vh - 57px)}
+.right{flex:1;padding:16px;overflow-y:auto;max-height:calc(100vh - 57px)}
+.section-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.force-row{margin-bottom:10px}
+.force-label{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.force-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.force-name{font-size:13px;font-weight:500}
+.force-pct{font-size:12px;color:var(--txt2);margin-left:auto}
+.slider{width:100%;height:6px;-webkit-appearance:none;appearance:none;border-radius:3px;outline:none;cursor:pointer}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;border:2px solid currentColor}
+.slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer;border:2px solid currentColor}
+.preset-row{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
+.preset-btn{padding:7px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-size:12px;cursor:pointer;text-align:center;transition:.15s;white-space:nowrap}
+.preset-btn:hover{border-color:var(--blue);background:#1a2332}
+.preset-btn.active{border-color:var(--amber);background:#2a1f10;color:var(--amber)}
+.preset-section{max-height:280px;overflow-y:auto;margin:8px 0;padding-right:4px}
+.preset-section::-webkit-scrollbar{width:5px}
+.preset-section::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.preset-group-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin:10px 0 2px 0;padding-bottom:2px;border-bottom:1px solid var(--border)}
+.preset-group-label:first-child{margin-top:0}
+.input-group{margin-top:12px}
+.input-group label{font-size:12px;color:var(--txt2);display:block;margin-bottom:4px}
+.input-group input{width:100%;padding:8px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-size:13px}
+.input-group input:focus{outline:none;border-color:var(--blue)}
+.btn{padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:.15s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#4493f8}
+.btn-ghost{background:var(--panel2);color:var(--txt);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--blue)}
+.pipeline{display:flex;flex-direction:column;gap:0}
+.layer{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(48,54,61,.4)}
+.layer-num{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.layer-content{flex:1}
+.layer-title{font-size:12px;color:var(--txt2);margin-bottom:2px}
+.layer-text{font-size:13px;color:var(--txt);line-height:1.5}
+.layer-text .modifier{color:var(--amber);font-size:12px}
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
+.dim-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.dim-card .dim-name{font-size:11px;color:var(--txt3);margin-bottom:2px}
+.dim-card .dim-val{font-size:12px;color:var(--txt)}
+.dim-card .dim-bar{height:4px;border-radius:2px;margin-top:4px;background:var(--border)}
+.dim-card .dim-fill{height:100%;border-radius:2px}
+.output-area{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.output-area{grid-template-columns:1fr}}
+.output-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px}
+.output-box h3{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.prompt-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}
+.prompt-text{background:#0a0e14;border:1px solid var(--border);border-radius:6px;padding:10px;font-size:12px;line-height:1.7;color:var(--txt);white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;font-family:'SF Mono',Consolas,monospace}
+.why-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}
+.why-chain{font-size:12px;line-height:1.8;color:var(--txt2)}
+.why-chain .chain-step{padding:4px 0;border-left:2px solid var(--border);padding-left:10px;margin-left:4px}
+.why-chain .chain-step .step-label{color:var(--txt3);font-size:11px}
+.why-chain .chain-step .step-text{color:var(--txt)}
+.why-chain .chain-step.dominant{border-left-color:var(--amber)}
+.why-chain .chain-step.modifier{border-left-color:var(--green)}
+.copy-btn{margin-left:auto;padding:3px 10px;font-size:11px}
+.weight-bar{height:4px;border-radius:2px;margin-top:2px;overflow:hidden;display:flex}
+.weight-seg{height:100%;transition:.3s}
+.v-params{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.v-param{display:flex;gap:6px;font-size:12px}
+.v-param .v-key{color:var(--txt3);min-width:50px}
+.v-param .v-val{color:var(--txt)}
+.negative-box{background:#1a0f0f;border:1px solid #3d1f1f;border-radius:6px;padding:8px 10px;margin-top:8px;font-size:11px;color:#f0a0a0;line-height:1.5}
+.note{font-size:11px;color:var(--txt3);margin-top:4px}
+.scroll-hint{text-align:center;padding:8px;font-size:11px;color:var(--txt3)}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>文明混搭实验室</h1>
+<span class="sub">Civilization Mixing Lab</span>
+<span class="badge">Phase 1 验证</span>
+</div>
+<div class="main">
+<div class="left">
+<div class="section-title">六大力场权重</div>
+<div id="sliders"></div>
+<div class="preset-section">
+<div class="preset-group-label">东方雅致</div>
+<div class="preset-row">
+<button class="preset-btn" data-idx="0" onclick="applyPreset(0)">中国茶品牌</button>
+<button class="preset-btn" data-idx="1" onclick="applyPreset(1)">日本建筑</button>
+<button class="preset-btn" data-idx="3" onclick="applyPreset(3)">宋式美学</button>
+<button class="preset-btn" data-idx="4" onclick="applyPreset(4)">侘寂空间</button>
+<button class="preset-btn" data-idx="5" onclick="applyPreset(5)">新中式品牌</button>
+</div>
+<div class="preset-group-label">科技先锋</div>
+<div class="preset-row">
+<button class="preset-btn" data-idx="2" onclick="applyPreset(2)">美国科技</button>
+<button class="preset-btn" data-idx="6" onclick="applyPreset(6)">未来主义</button>
+<button class="preset-btn" data-idx="7" onclick="applyPreset(7)">北欧极简</button>
+</div>
+<div class="preset-group-label">自然有机</div>
+<div class="preset-row">
+<button class="preset-btn" data-idx="8" onclick="applyPreset(8)">有机食品</button>
+<button class="preset-btn" data-idx="9" onclick="applyPreset(9)">生态包装</button>
+</div>
+<div class="preset-group-label">精神仪式</div>
+<div class="preset-row">
+<button class="preset-btn" data-idx="10" onclick="applyPreset(10)">宗教艺术</button>
+<button class="preset-btn" data-idx="11" onclick="applyPreset(11)">禅意空间</button>
+<button class="preset-btn" data-idx="12" onclick="applyPreset(12)">冥想品牌</button>
+</div>
+<div class="preset-group-label">混搭创新</div>
+<div class="preset-row">
+<button class="preset-btn" data-idx="13" onclick="applyPreset(13)">国潮美妆</button>
+<button class="preset-btn" data-idx="14" onclick="applyPreset(14)">赛博东方</button>
+<button class="preset-btn" data-idx="15" onclick="applyPreset(15)">暗黑奢华</button>
+</div>
+</div>
+<div class="input-group">
+<label>创作命题</label>
+<input type="text" id="propInput" value="茶品牌视觉设计" placeholder="输入你的创作命题...">
+</div>
+<div style="margin-top:12px;display:flex;gap:8px">
+<button class="btn btn-primary" onclick="runEngine()" style="flex:1">运行引擎</button>
+<button class="btn btn-ghost" onclick="resetWeights()">重置</button>
+</div>
+<div style="margin-top:16px">
+<div class="section-title">引擎说明</div>
+<p class="note">调整六大力场权重（自动归一化），输入命题后运行引擎。系统将完成九层推演（L0压力→L8视觉参数），输出 Prompt + Why-Layer 因果溯源。</p>
+<p class="note" style="margin-top:6px;color:var(--amber)">核心验证：不同权重组合是否产出可感知差异化的视觉参数？</p>
+</div>
+</div>
+<div class="right">
+<div class="section-title">九层推演链路</div>
+<div class="pipeline" id="pipeline">
+<div class="scroll-hint">点击「运行引擎」开始推演</div>
+</div>
+<div class="output-area" id="outputArea" style="display:none">
+<div class="output-box">
+<h3>视觉参数 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('vParamsText').textContent)">复制</button></h3>
+<div class="v-params" id="vParams"></div>
+<pre id="vParamsText" style="display:none"></pre>
+</div>
+<div class="output-box">
+<h3>负向提示词 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('negText').textContent)">复制</button></h3>
+<div class="negative-box" id="negText"></div>
+</div>
+</div>
+<div class="prompt-box" id="promptBox" style="display:none">
+<h3 style="display:flex;align-items:center">生成 Prompt <button class="btn btn-primary copy-btn" onclick="copyText(document.getElementById('promptText').textContent)">复制 Prompt</button></h3>
+<div class="prompt-text" id="promptText"></div>
+</div>
+<div class="why-box" id="whyBox" style="display:none">
+<h3>Why-Layer 因果溯源</h3>
+<div class="why-chain" id="whyChain"></div>
+</div>
+</div>
+</div>
+<script>
+const FORCES=[
+{id:'F01',name:'平衡共生力场',nameEn:'Balance-Symbiosis',color:'#f0883e',
+L0:['大河农耕地理','资源稳定且依赖天时','周期性天灾','大一统宗族社会','以存续与稳定为核心生存目标'],
+L1:'人如何在变化无常的世界中，达成自我、他人、自然三者的恒久平衡？',
+L2:'循环绵延态，无绝对起点与终点，盛衰轮转、有无相生、无常为常态',
+L3:'虚实相生、空即为有。边界柔和、层次嵌套、疏密有致',
+L4:'向内修心、克制欲望、收敛锋芒。追求自洽、静定、内敛',
+L5:'天人一体，人是自然的从属与协同者，顺应自然肌理、时间、节律',
+L6:'沉静、悠远、松弛、温润、克制、清雅、安宁',
+L7:{
+light:{d:'漫射柔光、均匀布光',dp:80,v:'高对比硬光（敦煌/唐风）',vp:20},
+comp:{d:'留白、呼吸感、对称平衡',dp:80,v:'满铺密集构图（民俗/宫廷）',vp:20},
+color:{d:'低饱和、中性调和、自然原生色系',dp:80,v:'高饱和撞色（盛唐/喜庆）',vp:20},
+mat:{d:'原生温润、肌理自然材质',dp:80,v:'华丽雕琢材质（宫廷/礼器）',vp:20},
+rhythm:{d:'舒缓、连续、无剧烈跳动',dp:80,v:'浓烈张力节奏',vp:20}
+},
+L8:{light:'柔光/夹光/环境光',contrast:'低对比',comp:'居中/留白构图',angle:'45°平视',color:'低饱和暖中性色',material:'自然材质',mood:'真实温润氛围'},
+variants:['宋代清雅','唐代华美','日式侘寂','东南亚禅意','新中式极简','东方山居'],
+variantMod:'华丽系（唐/宫廷）+30%高对比高饱和',
+operator:'时间无常→接纳不完美、保留自然肌理；空间虚实→预留负空间、降低密度；天人合一→材质自然化、光影柔和化'
+},
+{id:'F02',name:'超越秩序力场',nameEn:'Transcendent-Order',color:'#a371f7',
+L0:['对未知天地/自然异象的恐惧与敬畏','多神/一神宗教体系约束','游牧/城邦集权社会','追求永恒秩序对抗世俗混乱','以超越世俗获得终极意义'],
+L1:'有限的人类，如何连接无限的宇宙与神圣秩序？如何超越世俗获得永恒意义？',
+L2:'世俗时间短暂虚无，神圣时间永恒恒定。现世为过渡，彼岸为终极',
+L3:'空间分层、天地二元、神圣中心聚合。中心庄严、边界肃穆、层级分明',
+L4:'自我谦卑、臣服秩序、克制私欲。个体价值依附于神圣整体',
+L5:'自然是神圣秩序的具象化，山川万物皆承载神性，不可亵渎',
+L6:'庄严、肃穆、神圣、宁静、敬畏、纯粹、超脱',
+L7:{
+light:{d:'高纯净柔光、顶光神圣光效',dp:85,v:'强对比明暗光影（宗教戏剧）',vp:15},
+comp:{d:'绝对对称、中心聚合、层级规整',dp:90,v:'错落动态构图（生活化）',vp:10},
+color:{d:'高纯神圣色、纯色主导',dp:85,v:'层次渐变、复合配色',vp:15},
+mat:{d:'纯净、细腻、肃穆',dp:85,v:'复古肌理、岁月痕迹',vp:15},
+rhythm:{d:'稳定、静态、永恒',dp:90,v:'轻微动态节奏',vp:10}
+},
+L8:{light:'顶光/柔光',contrast:'中高对比',comp:'对称居中构图',angle:'平视视角',color:'纯色高纯色调',material:'纯净材质',mood:'庄严神圣氛围'},
+variants:['古印度梵境','伊斯兰几何秩序','拜占庭神圣','中式宗教禅净','现代极简神圣'],
+variantMod:'叙事类 +20%动态对比',
+operator:'宇宙秩序→视觉绝对对称、几何严谨；神圣超越→色彩纯化、光影升维；时空永恒→画面静态稳定'
+},
+{id:'F03',name:'认知解构力场',nameEn:'Cognitive-Deconstruction',color:'#58a6ff',
+L0:['海洋贸易地理','资源稀缺需精准规划','城邦竞争环境','崇尚逻辑思辨与实证','以认知突破生存局限'],
+L1:'人类如何通过逻辑、观察、分类、推理，理性认知并改造客观世界？',
+L2:'时间线性向前、迭代进步、可积累、可优化、可验证',
+L3:'空间可解构、可拆分、可几何量化、可精准定义。边界清晰、结构严谨',
+L4:'自我是观察者、思考者、分析者。以理性克制感性',
+L5:'自然是可被研究、解构、利用、重塑的客观对象',
+L6:'冷静、理智、严谨、清晰、精准、客观、有序',
+L7:{
+light:{d:'侧光硬光、层次切割、明暗分明',dp:85,v:'柔和漫射光（人文/极简）',vp:15},
+comp:{d:'几何构图、三分法、透视精准',dp:90,v:'松弛随性构图',vp:10},
+color:{d:'冷调理性色、低情绪化',dp:85,v:'温和暖调色彩',vp:15},
+mat:{d:'光滑、规整、工业精准',dp:85,v:'轻微自然肌理',vp:15},
+rhythm:{d:'清晰、规律、可量化',dp:90,v:'柔和模糊节奏',vp:10}
+},
+L8:{light:'侧光/硬光',contrast:'高对比',comp:'几何/三分构图',angle:'标准平视',color:'冷色调',material:'规整材质',mood:'专业科技理性氛围'},
+variants:['古希腊理性','西欧现代主义','工业极简','科技理性','学院严谨'],
+variantMod:'人文理性 -20%硬朗，增加柔和',
+operator:'逻辑解构→线条清晰、透视精准；客观认知→色彩去情绪化；线性进步→视觉整洁有序'
+},
+{id:'F04',name:'主体突破力场',nameEn:'Subjective-Breakthrough',color:'#ff7b72',
+L0:['新大陆无固有秩序','资源广阔且开放','移民文化打破传统束缚','商业竞争驱动创新','崇尚个体奋斗与突破固化规则'],
+L1:'独立个体如何突破传统束缚、打破规则、创造全新可能、实现自我价值？',
+L2:'时间属于个体，未来开放无限。强调创新、迭代、颠覆、突破',
+L3:'空间开放、无固定边界、可自由延伸、可跨界混搭',
+L4:'个体优先、自我表达、个性释放、拒绝同质化',
+L5:'人主导改造世界，打破自然与传统限制，创造人工新美学',
+L6:'自由、活力、先锋、自信、张扬、年轻、突破',
+L7:{
+light:{d:'创意光效、动态光影、明暗戏剧化',dp:80,v:'柔和静态光影（轻奢/简约）',vp:20},
+comp:{d:'对角线、不对称、动态倾斜',dp:85,v:'规整对称构图',vp:15},
+color:{d:'高饱和、撞色对比、大胆配色',dp:80,v:'低饱和高级配色',vp:20},
+mat:{d:'混搭碰撞、人工创新材质',dp:85,v:'简约单一材质',vp:15},
+rhythm:{d:'动感、跳跃、先锋',dp:80,v:'沉稳克制节奏',vp:20}
+},
+L8:{light:'创意光/侧光',contrast:'超高对比',comp:'对角线/不对称构图',angle:'动态视角',color:'高饱和撞色',material:'混搭材质',mood:'先锋潮流氛围'},
+variants:['美式潮流','街头先锋','赛博未来','年轻潮流','商业创新'],
+variantMod:'高端简约 -25%张扬，平衡先锋与高级',
+operator:'个体自由→打破对称、追求独特；突破创新→色彩大胆碰撞、材质跨界；无限可能→画面开放延伸、充满张力'
+},
+{id:'F05',name:'生命循环力场',nameEn:'Life-Cycle',color:'#3fb950',
+L0:['原始自然生存环境','完全依赖自然节律','部落群居模式','无人工改造的稳定环境','生存核心为顺应自然、融入生态循环'],
+L1:'人类如何融入自然循环、敬畏生命节律、与生态共生永续？',
+L2:'季节轮回、生命循环、生生不息。尊重生长、凋零、再生的完整周期',
+L3:'空间有机、随性、无人工规整边界、自然错落、原生舒展',
+L4:'自我谦卑、臣服自然、顺应节律、不强行干预',
+L5:'人是自然循环的一环，共生、共存、共荣，敬畏万物生命',
+L6:'原始、纯粹、治愈、野性、松弛、生机、质朴',
+L7:{
+light:{d:'自然光、环境漫射光',dp:90,v:'人工柔光修饰（轻奢自然）',vp:10},
+comp:{d:'自然错落、随性分布、无严格几何',dp:85,v:'规整构图（精致商业）',vp:15},
+color:{d:'自然原生色系、大地色、草木色',dp:90,v:'微调提亮、通透配色',vp:10},
+mat:{d:'原生自然材质、粗糙肌理',dp:85,v:'精细打磨自然材质',vp:15},
+rhythm:{d:'舒缓、自然、生长感',dp:90,v:'轻快灵动节奏',vp:10}
+},
+L8:{light:'自然光/环境光',contrast:'自然中对比',comp:'自然错落构图',angle:'户外视角',color:'大地自然色调',material:'原生肌理材质',mood:'治愈生机氛围'},
+variants:['非洲原住民','印第安自然','大洋洲海岛','山野有机','森系治愈'],
+variantMod:'商业精致 +20%干净通透，弱化粗糙',
+operator:'生命循环→体现生长、层次、自然肌理；生态共生→光影模拟自然环境；原生质朴→舍弃精致打磨、保留真实'
+},
+{id:'F06',name:'内观超越力场',nameEn:'Introspective-Transcendence',color:'#d2a8ff',
+L0:['资源匮乏','灾害频发','战乱频繁','世俗苦难常态化','宗教修行体系盛行','以内心解脱对抗外部苦难'],
+L1:'人如何面对世间苦难、执念与痛苦，通过内观自省获得解脱与安宁？',
+L2:'现世充满执念与苦痛，短暂虚妄；解脱是超越时间的终极宁静',
+L3:'空间极简、空寂、无多余干扰，剥离外物执念，回归本心空明',
+L4:'放下欲望、剥离执念、内观本心、消解情绪波动',
+L5:'外物皆幻象，自然是修行载体，借境修心',
+L6:'空寂、淡然、通透、沉静、解脱、悲悯、安宁',
+L7:{
+light:{d:'暗调柔光、低扰动、静谧',dp:85,v:'通透亮光（治愈/清新禅意）',vp:15},
+comp:{d:'极简留白、空寂、去繁就简',dp:90,v:'少量点缀构图（生活化禅意）',vp:10},
+color:{d:'极低饱和、灰度调和、素净单色',dp:85,v:'浅淡通透色系',vp:15},
+mat:{d:'通透、素净、细腻、无浮华',dp:85,v:'温润肌理材质',vp:15},
+rhythm:{d:'极致安静、无动态、无躁动',dp:90,v:'轻柔动态节奏',vp:10}
+},
+L8:{light:'暗调柔光/漫射光',contrast:'低对比',comp:'极简留白构图',angle:'平视静景',color:'低饱和灰度色',material:'通透素净材质',mood:'空寂治愈氛围'},
+variants:['大乘禅意','藏地静谧','佛系极简','禅修空寂','治愈解脱'],
+variantMod:'治愈系 +25%通透亮度，弱化暗沉',
+operator:'看破虚妄→删减元素、极致极简；内观解脱→色彩灰度弱化；当下安宁→画面无动态、无冲突'
+}
+];
+const PRESETS=[
+{name:'中国茶品牌',prop:'茶品牌视觉设计',weights:[70,0,10,0,20,0]},
+{name:'日本建筑空间',prop:'建筑空间设计',weights:[50,15,0,0,0,35]},
+{name:'美国科技产品',prop:'科技产品视觉',weights:[10,0,30,60,0,0]},
+{name:'宋式美学',prop:'宋式器物与空间',weights:[60,0,25,0,15,0]},
+{name:'侘寂空间',prop:'侘寂美学空间',weights:[30,0,0,0,15,55]},
+{name:'新中式品牌',prop:'新中式品牌视觉',weights:[50,0,20,30,0,0]},
+{name:'未来主义设计',prop:'未来主义产品概念',weights:[0,20,35,45,0,0]},
+{name:'北欧极简科技',prop:'北欧极简科技产品',weights:[35,0,40,0,25,0]},
+{name:'有机食品品牌',prop:'有机食品包装视觉',weights:[30,0,15,0,55,0]},
+{name:'生态包装设计',prop:'可持续生态包装',weights:[30,0,0,0,50,20]},
+{name:'宗教艺术',prop:'宗教主题艺术创作',weights:[15,55,0,0,0,30]},
+{name:'禅意空间',prop:'禅意室内空间',weights:[35,0,0,0,15,50]},
+{name:'冥想品牌',prop:'冥想产品品牌视觉',weights:[25,0,0,0,30,45]},
+{name:'国潮美妆',prop:'国潮美妆产品视觉',weights:[40,0,0,35,25,0]},
+{name:'赛博东方',prop:'赛博朋克东方城市',weights:[30,0,30,40,0,0]},
+{name:'暗黑奢华',prop:'暗黑奢华品牌视觉',weights:[0,35,0,35,0,30]}
+];
+const LAYER_NAMES=['L0 文明形成压力','L1 核心存在命题','L2 时间模型','L3 空间模型','L4 自我关系','L5 自然关系','L6 心理基调','L7 审美概率算法','L8 视觉参数'];
+const LAYER_KEYS=['L0','L1','L2','L3','L4','L5','L6','L7','L8'];
+const DIM_NAMES={light:'光影',comp:'构图',color:'色彩',mat:'材质',rhythm:'节奏'};
+const DIM_KEYS=['light','comp','color','mat','rhythm'];
+let weights=[70,0,10,0,20,0];
+function init(){
+const sc=document.getElementById('sliders');
+FORCES.forEach((f,i)=>{
+const row=document.createElement('div');
+row.className='force-row';
+row.innerHTML=`<div class="force-label"><span class="force-dot" style="background:${f.color}"></span><span class="force-name">${f.name}</span><span class="force-pct" id="pct${i}">${weights[i]}%</span></div><input type="range" class="slider" id="sl${i}" min="0" max="100" value="${weights[i]}" style="background:${f.color};accent-color:${f.color}" oninput="onSlider(${i},this.value)">`;
+sc.appendChild(row);
+});
+renderWeightBars();
+}
+function onSlider(i,val){
+weights[i]=parseInt(val);
+normalize(i);
+renderWeightBars();
+}
+function normalize(exclude){
+const sum=weights.reduce((a,b)=>a+b,0);
+if(sum===0){weights[exclude]=100;return;}
+if(sum===100)return;
+const diff=sum-100;
+const others=weights.reduce((a,b,i)=>i===exclude?a:a+b,0);
+if(others===0){weights[exclude]=100;return;}
+for(let i=0;i<6;i++){
+if(i===exclude)continue;
+const ratio=weights[i]/others;
+weights[i]=Math.max(0,Math.round(weights[i]-diff*ratio));
+}
+const finalSum=weights.reduce((a,b)=>a+b,0);
+weights[exclude]+=100-finalSum;
+weights[exclude]=Math.max(0,weights[exclude]);
+FORCES.forEach((f,i)=>{
+document.getElementById('sl'+i).value=weights[i];
+document.getElementById('pct'+i).textContent=weights[i]+'%';
+});
+}
+function renderWeightBars(){
+FORCES.forEach((f,i)=>{
+const el=document.getElementById('pct'+i);
+if(el)el.textContent=weights[i]+'%';
+const sl=document.getElementById('sl'+i);
+if(sl)sl.value=weights[i];
+});
+}
+function applyPreset(idx){
+const p=PRESETS[idx];
+weights=[...p.weights];
+document.getElementById('propInput').value=p.prop;
+document.querySelectorAll('.preset-btn').forEach(b=>{
+const bIdx=parseInt(b.getAttribute('data-idx'));
+b.classList.toggle('active',bIdx===idx);
+});
+renderWeightBars();
+runEngine();
+}
+function resetWeights(){
+weights=[100,0,0,0,0,0];
+document.getElementById('propInput').value='';
+document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+renderWeightBars();
+document.getElementById('pipeline').innerHTML='<div class="scroll-hint">已重置，调整权重后运行引擎</div>';
+document.getElementById('outputArea').style.display='none';
+document.getElementById('promptBox').style.display='none';
+document.getElementById('whyBox').style.display='none';
+}
+function getActiveForces(){
+return weights.map((w,i)=>({force:FORCES[i],weight:w,idx:i})).filter(x=>x.weight>0).sort((a,b)=>b.weight-a.weight);
+}
+function blendL7(){
+const result={};
+for(const dim of DIM_KEYS){
+const entries=[];
+for(let i=0;i<6;i++){
+if(weights[i]===0)continue;
+const f=FORCES[i];
+const d=f.L7[dim];
+entries.push({text:d.d,score:weights[i]*d.dp/100,source:f.name,color:f.color,isVariant:false,weight:weights[i]});
+if(d.vp>0)entries.push({text:d.v,score:weights[i]*d.vp/100,source:f.name,color:f.color,isVariant:true,weight:weights[i]});
+}
+entries.sort((a,b)=>b.score-a.score);
+result[dim]=entries.filter(e=>e.score>0).slice(0,3);
+}
+return result;
+}
+function runEngine(){
+const active=getActiveForces();
+if(active.length===0||active[0].weight===0){alert('请至少设置一个力场权重');return;}
+const prop=document.getElementById('propInput').value||'未指定命题';
+const dominant=active[0];
+const blend=blendL7();
+renderPipeline(active,blend,prop);
+renderOutput(active,blend,prop);
+renderPrompt(active,blend,prop);
+renderWhyLayer(active,prop);
+document.getElementById('outputArea').style.display='grid';
+document.getElementById('promptBox').style.display='block';
+document.getElementById('whyBox').style.display='block';
+}
+function renderPipeline(active,blend,prop){
+const pipe=document.getElementById('pipeLine')||document.getElementById('pipeline');
+const dominant=active[0];
+let html='';
+const layerColors=['#f0883e','#a371f7','#58a6ff','#ff7b72','#3fb950','#d2a8ff'];
+for(let li=0;li<9;li++){
+const key=LAYER_KEYS[li];
+const dom=dominant.force;
+const domColor=dom.color;
+let text='';
+if(li<7){
+const fieldVal=dom[key];
+if(li===0){
+text=fieldVal.join('、');
+}else{
+text=fieldVal;
+}
+const modifiers=active.slice(1).filter(a=>a.weight>=10);
+let modHtml='';
+if(modifiers.length>0&&li>=1&&li<=6){
+modHtml=modifiers.map(m=>`<span class="modifier"> + ${m.force.name}(${m.weight}%): ${m.force[key]}</span>`).join('');
+}
+html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">${LAYER_KEYS[li]}</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[li]}</div><div class="layer-text">${text}${modHtml}</div></div></div>`;
+}else if(li===7){
+let dimHtml='<div class="dim-grid">';
+for(const dim of DIM_KEYS){
+const entries=blend[dim];
+if(!entries||entries.length===0)continue;
+const top=entries[0];
+const pct=Math.round(top.score);
+dimHtml+=`<div class="dim-card"><div class="dim-name">${DIM_NAMES[dim]}</div><div class="dim-val">${top.text}</div><div class="dim-bar"><div class="dim-fill" style="width:${pct}%;background:${top.color}"></div></div><div style="font-size:10px;color:var(--txt3);margin-top:2px">${pct}% ${top.isVariant?'(变体)':''} · ${top.source}</div>`;
+if(entries[1]&&entries[1].score>3){
+const p2=Math.round(entries[1].score);
+dimHtml+=`<div style="font-size:10px;color:var(--txt2);margin-top:2px">+ ${entries[1].text} (${p2}%)</div>`;
+}
+dimHtml+=`</div>`;
+}
+dimHtml+='</div>';
+html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">L7</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[7]}</div>${dimHtml}</div></div>`;
+}else{
+let vpHtml='<div class="v-params">';
+const l8=dom.L8;
+const l8Entries=Object.entries(l8);
+const l8Labels={light:'光影',contrast:'对比',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
+for(const[k,v]of l8Entries){
+vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
+}
+vpHtml+='</div>';
+const modifiers=active.slice(1).filter(a=>a.weight>=10);
+let modHtml='';
+if(modifiers.length>0){
+modHtml='<div style="margin-top:6px;font-size:11px;color:var(--amber)">修饰: '+modifiers.map(m=>`${m.force.name}(${m.weight}%) → ${m.force.L8.mood}`).join('； ')+'</div>';
+}
+html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">L8</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[8]}</div>${vpHtml}${modHtml}</div></div>`;
+}
+}
+pipe.innerHTML=html;
+}
+function renderOutput(active,blend,prop){
+const dominant=active[0];
+const l8=dominant.force.L8;
+const l8Labels={light:'光影',contrast:'对比度',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
+let vpHtml='';
+let vpText='';
+for(const[k,v]of Object.entries(l8)){
+vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
+vpText+=`${l8Labels[k]||k}: ${v}\n`;
+}
+const modifiers=active.slice(1).filter(a=>a.weight>=10);
+if(modifiers.length>0){
+vpHtml+=`<div style="grid-column:1/-1;font-size:11px;color:var(--amber);margin-top:4px">+ ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('； ')}</div>`;
+vpText+=`\n修饰: ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('; ')}`;
+}
+document.getElementById('vParams').innerHTML=vpHtml;
+document.getElementById('vParamsText').textContent=vpText;
+let neg='overexposed, underexposed, blurry, low resolution, noise, watermark, text, logo, deformed, distorted, cropped, out of frame, duplicate, artifact, color cast, compression artifacts, unnatural lighting, plastic skin';
+if(dominant.force.id==='F01')neg+=', oily shine, fake skin, heavy foundation, plastic food look';
+if(dominant.force.id==='F04')neg+=', dull, boring, flat, outdated, generic, stock photo look';
+if(dominant.force.id==='F06')neg+=', cluttered, busy, chaotic, harsh lighting, saturated colors';
+document.getElementById('negText').textContent=neg;
+}
+function renderPrompt(active,blend,prop){
+const dominant=active[0];
+const l8=dominant.force.L8;
+const tones=active.filter(a=>a.weight>=5).map(a=>a.force.L6);
+const variants=dominant.force.variants;
+const topVariant=variants[0];
+let prompt=`${prop}, `;
+prompt+=`${blend.light[0].text}, `;
+prompt+=`${blend.comp[0].text}, `;
+prompt+=`${blend.color[0].text}, `;
+prompt+=`${blend.mat[0].text}, `;
+prompt+=`${l8.light}, ${l8.contrast}, ${l8.comp}, ${l8.angle}, ${l8.color}, ${l8.material}, `;
+prompt+=`mood: ${tones.join(', ')}, `;
+prompt+=`${l8.mood}`;
+if(active.length>1){
+prompt+=`, blended with ${active.slice(1).map(a=>`${a.force.name}(${a.weight}%)`).join(' + ')}`;
+}
+prompt+=`, ${topVariant} style, `;
+prompt+=`high quality, 8K, professional, cinematic, detailed`;
+document.getElementById('promptText').textContent=prompt;
+}
+function renderWhyLayer(active,prop){
+const dominant=active[0];
+const f=dominant.force;
+let html=`<div style="margin-bottom:8px"><strong style="color:${f.color}">${f.name} ${dominant.weight}%</strong> — 主导力场`;
+if(active.length>1){
+html+=active.slice(1).map(a=>`<br><span style="color:${a.force.color}">${a.force.name} ${a.weight}%</span> — ${a.weight>=15?'修饰':'点缀'}`).join('');
+}
+html+=`</div>`;
+html+=`<div style="margin:8px 0;font-size:11px;color:var(--txt3)">命题: ${prop}</div>`;
+html+=`<div style="font-size:11px;color:var(--amber);margin-bottom:6px">${f.variantMod}</div>`;
+const chain=[
+{label:'L0 文明形成压力',text:f.L0.join(' → '),isDom:true},
+{label:'L1 存在命题',text:f.L1,isDom:true},
+{label:'L2 时间模型',text:f.L2,isDom:true},
+{label:'L3 空间模型',text:f.L3,isDom:true},
+{label:'L4 自我关系',text:f.L4,isDom:true},
+{label:'L5 自然关系',text:f.L5,isDom:true},
+{label:'L6 心理基调',text:f.L6,isDom:true},
+{label:'L7 审美算法',text:f.operator,isDom:true},
+{label:'L8 视觉参数',text:`${f.L8.light} / ${f.L8.contrast} / ${f.L8.comp} / ${f.L8.color} / ${f.L8.material} / ${f.L8.mood}`,isDom:true}
+];
+html+='<div style="font-size:11px;color:var(--txt3);margin-bottom:4px">完整因果链路:</div>';
+for(const step of chain){
+html+=`<div class="chain-step ${step.isDom?'dominant':''}"><span class="step-label">${step.label}</span><br><span class="step-text">${step.text}</span></div>`;
+}
+if(active.length>1){
+html+='<div style="margin-top:10px;font-size:11px;color:var(--txt3);margin-bottom:4px">修饰力场贡献:</div>';
+for(const a of active.slice(1)){
+html+=`<div class="chain-step modifier"><span class="step-label" style="color:${a.force.color}">${a.force.name} (${a.weight}%)</span><br><span class="step-text">${a.force.operator}</span></div>`;
+}
+}
+document.getElementById('whyChain').innerHTML=html;
+}
+function copyText(text){
+if(navigator.clipboard){
+navigator.clipboard.writeText(text).then(()=>showToast('已复制')).catch(()=>fallbackCopy(text));
+}else{fallbackCopy(text);}
+}
+function fallbackCopy(text){
+const ta=document.createElement('textarea');
+ta.value=text;
+ta.style.position='fixed';ta.style.opacity=0;
+document.body.appendChild(ta);ta.select();
+try{document.execCommand('copy');showToast('已复制')}catch(e){showToast('复制失败')}
+document.body.removeChild(ta);
+}
+function showToast(msg){
+const t=document.createElement('div');
+t.textContent=msg;
+t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f6feb;color:#fff;padding:8px 20px;border-radius:6px;font-size:13px;z-index:9999;animation:fadeIn .2s';
+document.body.appendChild(t);
+setTimeout(()=>t.remove(),2000);
+}
+init();
+</script>
+
+<!-- ===== 反馈回流器 v1.0（进化器官：使用数据记录 + 导出） ===== -->
+<div id="fbWidget" style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:system-ui">
+  <button id="fbToggle" onclick="fbPanel.style.display=fbPanel.style.display==='none'?'block':'none'" style="background:#1f6feb;color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)">反馈</button>
+  <div id="fbPanel" style="display:none;background:#fff;border-radius:12px;padding:14px;width:260px;box-shadow:0 4px 20px rgba(0,0,0,.2)">
+    <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px">这次推演有用吗？</div>
+    <div style="margin-bottom:8px">
+      <button class="fb-rate" data-r="5" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">5 很有用</button>
+      <button class="fb-rate" data-r="4" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">4</button>
+      <button class="fb-rate" data-r="3" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">3</button>
+      <button class="fb-rate" data-r="2" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">2</button>
+      <button class="fb-rate" data-r="1" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">1 没用</button>
+    </div>
+    <textarea id="fbComment" placeholder="哪里有用/哪里不准/缺什么功能？" style="width:100%;box-sizing:border-box;height:56px;border:1px solid #ddd;border-radius:6px;padding:6px;font-size:12px;margin-bottom:8px"></textarea>
+    <div style="display:flex;gap:6px">
+      <button onclick="fbSubmit()" style="flex:1;background:#1f6feb;color:#fff;border:0;border-radius:6px;padding:6px;cursor:pointer;font-size:12px">提交反馈</button>
+      <button onclick="fbExport()" style="flex:1;background:#f6f8fa;color:#333;border:1px solid #ddd;border-radius:6px;padding:6px;cursor:pointer;font-size:12px">导出数据</button>
+    </div>
+    <div id="fbStatus" style="font-size:11px;color:#888;margin-top:6px"></div>
+  </div>
+</div>
+<script>
+(function(){
+  window.fbSubmit=function(){
+    var sel=document.querySelector('.fb-rate.sel');
+    var r=sel?parseInt(sel.dataset.r):null;
+    var c=document.getElementById('fbComment').value.trim();
+    if(!r&&!c){document.getElementById('fbStatus').textContent='请先评分或填写建议';return;}
+    var rec={ts:new Date().toISOString(),rating:r,comment:c,
+      weights:(typeof weights!=='undefined')?weights.slice():null,
+      prop:(typeof document!=='undefined'&&document.getElementById('propInput'))?document.getElementById('propInput').value:''};
+    var arr=JSON.parse(localStorage.getItem('civ_feedback')||'[]');
+    arr.push(rec);localStorage.setItem('civ_feedback',JSON.stringify(arr));
+    document.getElementById('fbStatus').textContent='已记录，感谢！这些数据将驱动引擎进化';
+    document.getElementById('fbComment').value='';
+  };
+  window.fbExport=function(){
+    var arr=JSON.parse(localStorage.getItem('civ_feedback')||'[]');
+    var blob=new Blob([JSON.stringify(arr,null,2)],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='civ_feedback_'+new Date().toISOString().slice(0,10)+'.json';a.click();
+    document.getElementById('fbStatus').textContent='已导出 '+arr.length+' 条反馈';
+  };
+  document.querySelectorAll('.fb-rate').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.fb-rate').forEach(function(x){x.style.background='#fafafa';x.style.borderColor='#ddd';x.classList.remove('sel');});
+      b.style.background='#e7f0ff';b.style.borderColor='#1f6feb';b.classList.add('sel');
+    };
+  });
+})();
+</script>
+
+</body>
+</html>

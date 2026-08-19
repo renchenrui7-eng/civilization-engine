@@ -1,0 +1,7 @@
+node_modules/
+*.log
+mcp/usage_log.jsonl
+mcp/feedback_log.jsonl
+.DS_Store
+Thumbs.db
+dist/
