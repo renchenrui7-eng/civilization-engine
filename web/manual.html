@@ -189,5 +189,33 @@
 </footer>
 
 </div>
+
+<!-- ===== 悬浮按钮坞：投币 + 反馈 ===== -->
+<div style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:system-ui;display:flex;gap:8px;align-items:center">
+  <button onclick="document.getElementById('payCard').style.display='flex'" style="background:linear-gradient(135deg,#f0883e,#d29922);color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);font-size:13px;font-weight:600">💰 投币</button>
+  <button onclick="document.getElementById('fbCard').style.display='flex'" style="background:#1f6feb;color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);font-size:13px;font-weight:600">💬 反馈</button>
+</div>
+
+<!-- 投币弹窗 -->
+<div id="payCard" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fffdf7;border-radius:16px;padding:26px 24px 20px;max-width:320px;width:100%;text-align:center;position:relative;box-shadow:0 16px 48px rgba(0,0,0,.4)">
+    <button onclick="document.getElementById('payCard').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:18px;color:#a29880;cursor:pointer;line-height:1">✕</button>
+    <h3 style="margin:0 0 6px;color:#8c2f23;font-size:17px;letter-spacing:1px">请作者喝杯咖啡</h3>
+    <p style="font-size:12px;color:#8a7f66;margin:0 0 14px;line-height:1.7">如果这个说明书帮到了你<br>欢迎投币支持引擎继续进化</p>
+    <img src="paycode.png" alt="收款码" style="width:220px;max-width:100%;border-radius:10px;border:1px solid #d9ceb2;box-shadow:0 4px 16px rgba(140,47,35,.12)">
+    <br><button onclick="document.getElementById('payCard').style.display='none'" style="margin-top:14px;padding:8px 26px;border-radius:999px;border:1px solid #d8cdb4;background:#f6f1e3;color:#5d543f;font-size:13px;cursor:pointer">关闭</button>
+  </div>
+</div>
+
+<!-- 反馈弹窗（微信二维码） -->
+<div id="fbCard" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fff;border-radius:16px;padding:26px 24px 20px;max-width:320px;width:100%;text-align:center;position:relative;box-shadow:0 16px 48px rgba(0,0,0,.4)">
+    <button onclick="document.getElementById('fbCard').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:18px;color:#999;cursor:pointer;line-height:1">✕</button>
+    <h3 style="margin:0 0 6px;color:#333;font-size:17px">💬 反馈与建议</h3>
+    <p style="font-size:12px;color:#777;margin:0 0 14px;line-height:1.7">有功能建议、Bug 反馈，或想聊聊文明美学？<br>微信扫码，直接找到作者。</p>
+    <img src="feedback.png" alt="微信反馈二维码" style="width:200px;max-width:100%;border-radius:10px;border:1px solid #eee">
+    <br><button onclick="document.getElementById('fbCard').style.display='none'" style="margin-top:14px;padding:8px 26px;border-radius:999px;border:1px solid #ddd;background:#f6f8fa;color:#333;font-size:13px;cursor:pointer">关闭</button>
+  </div>
+</div>
 </body>
 </html>
