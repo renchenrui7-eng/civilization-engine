@@ -2,171 +2,273 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>文明混搭实验室 · Civilization Mixing Lab</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2330;--border:#30363d;--txt:#e6edf3;--txt2:#8b949e;--txt3:#6e7681;--blue:#58a6ff;--green:#3fb950;--amber:#f0883e;--purple:#a371f7;--red:#ff7b72;--teal:#39d0d8;--lav:#d2a8ff}
-body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden}
-.header{background:linear-gradient(135deg,#161b22,#0d1117);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px}
-.header h1{font-size:18px;font-weight:600}
-.header .sub{font-size:12px;color:var(--txt2);margin-left:8px}
-.header .badge{background:var(--amber);color:#000;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
-.main{display:flex;gap:0;min-height:calc(100vh - 57px)}
-.left{width:300px;min-width:300px;border-right:1px solid var(--border);padding:16px;overflow-y:auto;max-height:calc(100vh - 57px)}
-.right{flex:1;padding:16px;overflow-y:auto;max-height:calc(100vh - 57px)}
-.section-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.force-row{margin-bottom:10px}
-.force-label{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.force-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.force-name{font-size:13px;font-weight:500}
-.force-pct{font-size:12px;color:var(--txt2);margin-left:auto}
-.slider{width:100%;height:6px;-webkit-appearance:none;appearance:none;border-radius:3px;outline:none;cursor:pointer}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;border:2px solid currentColor}
-.slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer;border:2px solid currentColor}
-.preset-row{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
-.preset-btn{padding:7px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-size:12px;cursor:pointer;text-align:center;transition:.15s;white-space:nowrap}
-.preset-btn:hover{border-color:var(--blue);background:#1a2332}
-.preset-btn.active{border-color:var(--amber);background:#2a1f10;color:var(--amber)}
-.preset-section{max-height:280px;overflow-y:auto;margin:8px 0;padding-right:4px}
-.preset-section::-webkit-scrollbar{width:5px}
-.preset-section::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.preset-group-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin:10px 0 2px 0;padding-bottom:2px;border-bottom:1px solid var(--border)}
-.preset-group-label:first-child{margin-top:0}
-.input-group{margin-top:12px}
-.input-group label{font-size:12px;color:var(--txt2);display:block;margin-bottom:4px}
-.input-group input{width:100%;padding:8px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-size:13px}
-.input-group input:focus{outline:none;border-color:var(--blue)}
-.btn{padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:.15s}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-primary:hover{background:#4493f8}
-.btn-ghost{background:var(--panel2);color:var(--txt);border:1px solid var(--border)}
-.btn-ghost:hover{border-color:var(--blue)}
-.pipeline{display:flex;flex-direction:column;gap:0}
-.layer{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(48,54,61,.4)}
-.layer-num{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
-.layer-content{flex:1}
-.layer-title{font-size:12px;color:var(--txt2);margin-bottom:2px}
-.layer-text{font-size:13px;color:var(--txt);line-height:1.5}
-.layer-text .modifier{color:var(--amber);font-size:12px}
-.dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
-.dim-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
-.dim-card .dim-name{font-size:11px;color:var(--txt3);margin-bottom:2px}
-.dim-card .dim-val{font-size:12px;color:var(--txt)}
-.dim-card .dim-bar{height:4px;border-radius:2px;margin-top:4px;background:var(--border)}
-.dim-card .dim-fill{height:100%;border-radius:2px}
-.output-area{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:900px){.output-area{grid-template-columns:1fr}}
-.output-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px}
-.output-box h3{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.prompt-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}
-.prompt-text{background:#0a0e14;border:1px solid var(--border);border-radius:6px;padding:10px;font-size:12px;line-height:1.7;color:var(--txt);white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;font-family:'SF Mono',Consolas,monospace}
-.why-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}
-.why-chain{font-size:12px;line-height:1.8;color:var(--txt2)}
-.why-chain .chain-step{padding:4px 0;border-left:2px solid var(--border);padding-left:10px;margin-left:4px}
-.why-chain .chain-step .step-label{color:var(--txt3);font-size:11px}
-.why-chain .chain-step .step-text{color:var(--txt)}
-.why-chain .chain-step.dominant{border-left-color:var(--amber)}
-.why-chain .chain-step.modifier{border-left-color:var(--green)}
-.copy-btn{margin-left:auto;padding:3px 10px;font-size:11px}
-.weight-bar{height:4px;border-radius:2px;margin-top:2px;overflow:hidden;display:flex}
-.weight-seg{height:100%;transition:.3s}
-.v-params{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.v-param{display:flex;gap:6px;font-size:12px}
-.v-param .v-key{color:var(--txt3);min-width:50px}
-.v-param .v-val{color:var(--txt)}
-.negative-box{background:#1a0f0f;border:1px solid #3d1f1f;border-radius:6px;padding:8px 10px;margin-top:8px;font-size:11px;color:#f0a0a0;line-height:1.5}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f5f5f7;--card:#fff;--txt:#1d1d1f;--txt2:#6e6e73;--txt3:#86868b;
+  --line:#e8e8ed;--blue:#0071e3;--blue2:#2997ff;--gold:#b08d3e;
+  --r-lg:20px;--r-md:14px;--shadow:0 2px 10px rgba(0,0,0,.05);--shadow-lg:0 10px 32px rgba(0,0,0,.12);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ===== 毛玻璃顶栏 ===== */
+.topbar{position:sticky;top:0;z-index:900;display:flex;align-items:center;gap:12px;padding:12px 20px;background:rgba(245,245,247,.78);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
+.brand{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.brand .logo{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#b08d3e,#e8c97a,#7a5c1e);box-shadow:0 2px 6px rgba(176,141,62,.35);flex-shrink:0}
+.brand .en{font-size:11px;color:var(--txt3);font-weight:500;letter-spacing:.5px}
+.brand-mo{display:none}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.tb-link{font-size:13px;color:var(--blue);text-decoration:none;font-weight:500;padding:6px 12px;border-radius:999px;transition:.2s}
+.tb-link:hover{background:rgba(0,113,227,.08)}
+.tb-pill{font-size:13px;font-weight:600;border:0;border-radius:999px;padding:6px 14px;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.tb-pill .btn-txt,.tb-link .btn-txt{margin-left:4px}
+.tb-pill:active{transform:scale(.96)}
+.tb-pay{background:linear-gradient(135deg,#f0883e,#d29922);color:#fff;box-shadow:0 2px 8px rgba(240,136,62,.35)}
+.tb-fb{background:#fff;color:var(--txt);border:1px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+
+/* ===== Hero ===== */
+.hero{max-width:1080px;margin:0 auto;padding:44px 20px 8px;text-align:center}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.15;background:linear-gradient(120deg,#1d1d1f 30%,#b08d3e 60%,#7a5c1e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{margin-top:14px;font-size:15px;color:var(--txt2);line-height:1.7}
+.hero-steps{margin-top:20px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hstep{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--txt2);box-shadow:var(--shadow);display:flex;align-items:center;gap:6px}
+.hstep b{color:var(--gold)}
+
+/* ===== 布局 ===== */
+.layout{max-width:1080px;margin:0 auto;padding:20px 16px 100px}
+@media(min-width:1000px){
+  .layout{display:grid;grid-template-columns:390px 1fr;gap:22px;align-items:start;padding:24px 20px 100px}
+  .config-panel{position:sticky;top:76px}
+}
+.panel{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04)}
+
+/* ===== 配置面板 ===== */
+.config-panel{padding:20px}
+.cfg-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--txt);letter-spacing:.02em;margin-bottom:4px}
+.cfg-title .num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#1d1d1f,#3a3a3c);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cfg-sub{font-size:12px;color:var(--txt3);margin-bottom:12px}
+.cfg-sec{margin-top:22px}
+.cfg-sec:first-child{margin-top:0}
+
+/* 预设 */
+.preset-scroll{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.preset-scroll::-webkit-scrollbar{height:5px}
+.preset-scroll::-webkit-scrollbar-thumb{background:#d2d2d7;border-radius:3px}
+.pcat{font-size:11px;font-weight:700;color:var(--txt3);margin:4px 0 0;letter-spacing:.08em;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.pcat::after{content:"";height:1px;flex:1;background:var(--line);min-width:24px}
+.preset-btn{flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:148px;padding:11px 12px;background:#fbfbfd;border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:transform .18s,box-shadow .2s,border-color .2s;text-align:left;font-family:inherit}
+.preset-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:#d2d2d7}
+.preset-btn.active{border-color:var(--gold);background:linear-gradient(180deg,#fdfaf3,#faf5e8);box-shadow:0 4px 16px rgba(176,141,62,.18)}
+.preset-btn .pb-name{font-size:13px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.preset-btn .pb-desc{font-size:11px;color:var(--txt3);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* 力场卡片 */
+.force-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.force-card{border:1px solid var(--line);border-radius:14px;padding:10px 11px;background:#fbfbfd;cursor:pointer;transition:transform .18s,box-shadow .2s,border-color .2s;position:relative;overflow:hidden}
+.force-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.force-card.on{border-width:1.5px;background:#fff}
+.force-card .fc-head{display:flex;align-items:center;gap:6px}
+.force-card .fc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.force-card .fc-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.force-card .fc-trait{font-size:10.5px;color:var(--txt3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.force-card .fc-pct{position:absolute;top:8px;right:10px;font-size:13px;font-weight:700;opacity:0;transform:scale(.7);transition:.25s}
+.force-card.on .fc-pct{opacity:1;transform:scale(1)}
+.force-card .fc-ctl{display:none;align-items:center;gap:6px;margin-top:8px}
+.force-card.on .fc-ctl{display:flex}
+.force-card .fc-ctl button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--txt);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
+.force-card .fc-ctl button:hover{background:#f2f2f7}
+.force-card .fc-ctl button:active{transform:scale(.92)}
+.force-card .fc-ctl .fc-bar{flex:1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.force-card .fc-ctl .fc-bar i{display:block;height:100%;border-radius:3px;transition:width .3s}
+.force-card .fc-ctl .fc-val{font-size:11px;font-weight:600;min-width:34px;text-align:right;color:var(--txt2)}
+
+/* 解读条 */
+.readout{margin-top:10px;background:linear-gradient(135deg,#fdfaf3,#f7f2e4);border:1px solid #efe6cd;border-radius:12px;padding:9px 12px;font-size:12px;color:#6b5a2e;line-height:1.55;min-height:36px}
+
+/* 输入与按钮 */
+.prop-input{width:100%;padding:12px 14px;font-size:14.5px;border:1px solid var(--line);border-radius:12px;background:#fbfbfd;color:var(--txt);font-family:inherit;transition:.2s}
+.prop-input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(0,113,227,.12)}
+.btn-row{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;padding:13px 10px;border-radius:14px;border:0;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .2s,opacity .2s;letter-spacing:.01em}
+.btn:active{transform:scale(.97)}
+.btn-run{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(0,113,227,.3)}
+.btn-run:hover{background:#0077ed}
+.btn-ghost{flex:0 0 auto;padding:13px 14px;background:#fbfbfd;color:var(--txt);border:1px solid var(--line)}
+.btn-ghost:hover{background:#f2f2f7}
+.btn-lite{flex:0 0 auto;padding:13px 14px;background:transparent;color:var(--txt2);border:1px dashed #d2d2d7;font-size:13px}
+.btn-lite:hover{color:var(--txt);border-color:#a1a1a6}
+
+/* ===== 结果区 ===== */
+.result-panel{padding:22px;min-height:320px}
+.result-empty{text-align:center;padding:60px 20px;color:var(--txt3)}
+.result-empty .re-ic{font-size:44px;margin-bottom:14px;opacity:.6}
+.result-empty h3{font-size:17px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.result-empty p{font-size:13px;color:var(--txt2);line-height:1.7}
+.r-head{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.r-head h2{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.r-head .r-tag{font-size:11px;font-weight:600;color:var(--gold);background:#faf5e8;border:1px solid #efe6cd;border-radius:999px;padding:3px 10px}
+
+.layer{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);animation:fadeUp .4s ease both}
+.layer-num{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.layer-content{flex:1;min-width:0}
+.layer-title{font-size:11px;font-weight:600;color:var(--txt3);letter-spacing:.05em;margin-bottom:3px;text-transform:uppercase}
+.layer-text{font-size:13.5px;color:var(--txt);line-height:1.6}
+.layer-text .modifier{color:var(--gold);font-size:12px}
+
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}
+.dim-card{background:#fbfbfd;border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.dim-card .dim-name{font-size:10.5px;font-weight:700;color:var(--txt3);letter-spacing:.08em;margin-bottom:3px}
+.dim-card .dim-val{font-size:12px;font-weight:500;line-height:1.4}
+.dim-card .dim-bar{height:4px;border-radius:2px;margin-top:6px;background:var(--line);overflow:hidden}
+.dim-card .dim-fill{height:100%;border-radius:2px;transition:width .5s}
+.dim-card .dim-meta{font-size:10px;color:var(--txt3);margin-top:3px}
+.dim-card .dim-alt{font-size:10.5px;color:var(--txt2);margin-top:2px;line-height:1.4}
+
+.output-area{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.output-area{grid-template-columns:1fr 1fr}}
+.output-box{background:#fbfbfd;border:1px solid var(--line);border-radius:14px;padding:14px}
+.output-box h3{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.v-params{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.v-param{display:flex;gap:6px;font-size:12.5px;line-height:1.5}
+.v-param .v-key{color:var(--txt3);min-width:52px;flex-shrink:0}
+.v-param .v-val{color:var(--txt);font-weight:500}
+.negative-box{background:#fdf6f6;border:1px solid #f2d9d9;border-radius:10px;padding:10px 12px;margin-top:4px;font-size:11px;color:#b3564f;line-height:1.6;word-break:break-all}
+.prompt-box{background:linear-gradient(160deg,#1d1d1f,#2c2c2e);border-radius:16px;padding:16px;margin-top:14px}
+.prompt-box h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.prompt-text{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;font-size:12px;line-height:1.8;color:#f5f5f7;white-space:pre-wrap;word-break:break-all;max-height:220px;overflow-y:auto;font-family:"SF Mono",Consolas,monospace}
+.why-box{background:#fbfbfd;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+.why-box h3{font-size:13px;font-weight:700;margin-bottom:8px}
+.why-chain{font-size:12px;line-height:1.7;color:var(--txt2)}
+.chain-step{padding:5px 0;border-left:2px solid var(--line);padding-left:10px;margin-left:4px}
+.chain-step .step-label{color:var(--txt3);font-size:10.5px;font-weight:600;letter-spacing:.04em}
+.chain-step .step-text{color:var(--txt);font-size:12px}
+.chain-step.dominant{border-left-color:var(--gold)}
+.chain-step.modifier{border-left-color:#34c759}
+.copy-btn{margin-left:auto;padding:3px 12px;font-size:11px;border-radius:999px}
+.copy-btn.on-dark{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.22)}
 .note{font-size:11px;color:var(--txt3);margin-top:4px}
-.scroll-hint{text-align:center;padding:8px;font-size:11px;color:var(--txt3)}
+.scroll-hint{text-align:center;padding:14px;font-size:12px;color:var(--txt3)}
+.fade-seq{animation:fadeUp .45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== 反馈坞（浅色适配） ===== */
+#fbDock{font-family:inherit}
+#fbPanel{font-family:inherit;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+#fbPanel textarea{font-family:inherit}
+
+/* 弹窗动画 */
+#payCard>div{animation:fadeUp .25s ease both}
+
+@media(max-width:640px){
+  .topbar{padding:10px 14px}
+  .brand .en{display:none}
+  .brand-pc{display:none}
+  .brand-mo{display:inline;font-size:14px;font-weight:700}
+  .tb-link span{display:none}
+  .tb-pill.tb-pay,.tb-pill.tb-fb{display:none}
+  .hero{padding-top:32px}
+  .config-panel{padding:16px}
+  .result-panel{padding:16px}
+  .force-grid{grid-template-columns:1fr 1fr}
+  .preset-btn{width:138px}
+}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>文明混搭实验室</h1>
-<span class="sub">Civilization Mixing Lab</span>
-<span class="badge">Phase 1 验证</span>
-<a href="manual.html" target="_blank" style="margin-left:auto;font-size:12px;color:var(--blue);text-decoration:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px">📖 使用说明书（新手必读）</a>
-</div>
-<div class="main">
-<div class="left">
-<div class="section-title">六大力场权重</div>
-<div id="sliders"></div>
-<div class="preset-section">
-<div class="preset-group-label">东方雅致</div>
-<div class="preset-row">
-<button class="preset-btn" data-idx="0" onclick="applyPreset(0)">中国茶品牌</button>
-<button class="preset-btn" data-idx="1" onclick="applyPreset(1)">日本建筑</button>
-<button class="preset-btn" data-idx="3" onclick="applyPreset(3)">宋式美学</button>
-<button class="preset-btn" data-idx="4" onclick="applyPreset(4)">侘寂空间</button>
-<button class="preset-btn" data-idx="5" onclick="applyPreset(5)">新中式品牌</button>
-</div>
-<div class="preset-group-label">科技先锋</div>
-<div class="preset-row">
-<button class="preset-btn" data-idx="2" onclick="applyPreset(2)">美国科技</button>
-<button class="preset-btn" data-idx="6" onclick="applyPreset(6)">未来主义</button>
-<button class="preset-btn" data-idx="7" onclick="applyPreset(7)">北欧极简</button>
-</div>
-<div class="preset-group-label">自然有机</div>
-<div class="preset-row">
-<button class="preset-btn" data-idx="8" onclick="applyPreset(8)">有机食品</button>
-<button class="preset-btn" data-idx="9" onclick="applyPreset(9)">生态包装</button>
-</div>
-<div class="preset-group-label">精神仪式</div>
-<div class="preset-row">
-<button class="preset-btn" data-idx="10" onclick="applyPreset(10)">宗教艺术</button>
-<button class="preset-btn" data-idx="11" onclick="applyPreset(11)">禅意空间</button>
-<button class="preset-btn" data-idx="12" onclick="applyPreset(12)">冥想品牌</button>
-</div>
-<div class="preset-group-label">混搭创新</div>
-<div class="preset-row">
-<button class="preset-btn" data-idx="13" onclick="applyPreset(13)">国潮美妆</button>
-<button class="preset-btn" data-idx="14" onclick="applyPreset(14)">赛博东方</button>
-<button class="preset-btn" data-idx="15" onclick="applyPreset(15)">暗黑奢华</button>
-</div>
-</div>
-<div class="input-group">
-<label>创作命题</label>
-<input type="text" id="propInput" value="茶品牌视觉设计" placeholder="输入你的创作命题...">
-</div>
-<div style="margin-top:12px;display:flex;gap:8px">
-<button class="btn btn-primary" onclick="runEngine()" style="flex:1">运行引擎</button>
-<button class="btn btn-ghost" onclick="resetWeights()">重置</button>
-</div>
-<div style="margin-top:16px">
-<div class="section-title">引擎说明</div>
-<p class="note">调整六大力场权重（自动归一化），输入命题后运行引擎。系统将完成九层推演（L0压力→L8视觉参数），输出 Prompt + Why-Layer 因果溯源。</p>
-<p class="note" style="margin-top:6px;color:var(--amber)">核心验证：不同权重组合是否产出可感知差异化的视觉参数？</p>
-</div>
-</div>
-<div class="right">
-<div class="section-title">九层推演链路</div>
-<div class="pipeline" id="pipeline">
-<div class="scroll-hint">点击「运行引擎」开始推演</div>
-</div>
-<div class="output-area" id="outputArea" style="display:none">
-<div class="output-box">
-<h3>视觉参数 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('vParamsText').textContent)">复制</button></h3>
-<div class="v-params" id="vParams"></div>
-<pre id="vParamsText" style="display:none"></pre>
-</div>
-<div class="output-box">
-<h3>负向提示词 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('negText').textContent)">复制</button></h3>
-<div class="negative-box" id="negText"></div>
-</div>
-</div>
-<div class="prompt-box" id="promptBox" style="display:none">
-<h3 style="display:flex;align-items:center">生成 Prompt <button class="btn btn-primary copy-btn" onclick="copyText(document.getElementById('promptText').textContent)">复制 Prompt</button></h3>
-<div class="prompt-text" id="promptText"></div>
-</div>
-<div class="why-box" id="whyBox" style="display:none">
-<h3>Why-Layer 因果溯源</h3>
-<div class="why-chain" id="whyChain"></div>
-</div>
-</div>
-</div>
+
+<!-- ===== 毛玻璃顶栏 ===== -->
+<nav class="topbar">
+  <div class="brand"><span class="logo"></span><span class="brand-pc">文明混搭实验室</span><span class="brand-mo">文明引擎</span><span class="en">CIVILIZATION MIXING LAB</span></div>
+  <div class="topbar-right">
+    <a class="tb-link" href="https://c3db563a89b74e23a02a5e63e583db23.app.workbuddy.link" target="_blank">📖<span class="btn-txt">说明书</span></a>
+    <button class="tb-pill tb-pay" onclick="document.getElementById('payCard').style.display='flex'">💰<span class="btn-txt">投币</span></button>
+    <button class="tb-pill tb-fb" onclick="var p=document.getElementById('fbPanel');p.style.display=p.style.display==='none'?'block':'none'">💬<span class="btn-txt">反馈</span></button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <h1>让五千年审美，替你想方案</h1>
+  <p>输入一个命题，选一组气质，引擎用六大文明的审美基因<br>推演出从「情绪基调」到「光影参数」的完整视觉方案。</p>
+  <div class="hero-steps">
+    <span class="hstep"><b>1</b> 选气质（或直接用预设）</span>
+    <span class="hstep"><b>2</b> 说命题</span>
+    <span class="hstep"><b>3</b> 拿方案：报告 + Prompt + 执行建议</span>
+  </div>
+</header>
+
+<!-- ===== 主体 ===== -->
+<main class="layout">
+
+  <!-- 左/上：配置 -->
+  <aside class="panel config-panel">
+    <div class="cfg-sec">
+      <div class="cfg-title"><span class="num">1</span>从预设开始 <span style="font-weight:400;color:var(--txt3);font-size:12px">（42 个场景模板，点击即出方案）</span></div>
+      <div class="cfg-sub">按场景选一个，权重与命题自动配好；不满意再微调。</div>
+      <div id="presetWrap"></div>
+    </div>
+
+    <div class="cfg-sec">
+      <div class="cfg-title"><span class="num">2</span>自定义六大力场</div>
+      <div class="cfg-sub">点卡片加入混搭，点「− / +」调整主次，权重自动保持 100%。</div>
+      <div class="force-grid" id="forceGrid"></div>
+      <div class="readout" id="readout"></div>
+    </div>
+
+    <div class="cfg-sec">
+      <div class="cfg-title"><span class="num">3</span>创作命题</div>
+      <div class="cfg-sub">你想让 AI 做什么？一句话说清楚即可。</div>
+      <input class="prop-input" type="text" id="propInput" value="茶品牌视觉设计" placeholder="例：给手工银器工作室做产品摄影 / 雨林咖啡馆空间设计 ...">
+      <div class="btn-row">
+        <button class="btn btn-run" onclick="runEngine()">⚡ 运行引擎</button>
+        <button class="btn btn-lite" onclick="randomize()" title="随机一组气质灵感">🎲 灵感</button>
+        <button class="btn btn-ghost" onclick="resetWeights()">重置</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 右/下：结果 -->
+  <section class="panel result-panel" id="resultPanel">
+    <div class="result-empty" id="emptyState">
+      <div class="re-ic">🎨</div>
+      <h3>方案会出现在这里</h3>
+      <p>左侧选好气质与命题，点击「运行引擎」<br>你会得到：九层推演报告 · AI 绘画咒语 · 执行建议</p>
+    </div>
+    <div id="resultBody" style="display:none">
+      <div class="r-head">
+        <h2>九层推演报告</h2>
+        <span class="r-tag" id="resTag"></span>
+      </div>
+      <div class="pipeline" id="pipeline"></div>
+      <div class="output-area" id="outputArea" style="display:none">
+        <div class="output-box">
+          <h3>视觉参数 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('vParamsText').textContent)">复制</button></h3>
+          <div class="v-params" id="vParams"></div>
+          <pre id="vParamsText" style="display:none"></pre>
+        </div>
+        <div class="output-box">
+          <h3>负向提示词 <button class="btn btn-ghost copy-btn" onclick="copyText(document.getElementById('negText').textContent)">复制</button></h3>
+          <div class="negative-box" id="negText"></div>
+        </div>
+      </div>
+      <div class="prompt-box" id="promptBox" style="display:none">
+        <h3>生成 Prompt <button class="btn copy-btn on-dark" onclick="copyText(document.getElementById('promptText').textContent)">复制 Prompt</button></h3>
+        <div class="prompt-text" id="promptText"></div>
+      </div>
+      <div class="why-box" id="whyBox" style="display:none">
+        <h3>Why-Layer 因果溯源</h3>
+        <div class="why-chain" id="whyChain"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
 <script>
 const FORCES=[
-{id:'F01',name:'平衡共生力场',nameEn:'Balance-Symbiosis',color:'#f0883e',
+{id:'F01',name:'平衡共生力场',nameEn:'Balance-Symbiosis',color:'#f0883e',trait:'温润 · 克制 · 留白',
 L0:['大河农耕地理','资源稳定且依赖天时','周期性天灾','大一统宗族社会','以存续与稳定为核心生存目标'],
 L1:'人如何在变化无常的世界中，达成自我、他人、自然三者的恒久平衡？',
 L2:'循环绵延态，无绝对起点与终点，盛衰轮转、有无相生、无常为常态',
@@ -186,7 +288,7 @@ variants:['宋代清雅','唐代华美','日式侘寂','东南亚禅意','新中
 variantMod:'华丽系（唐/宫廷）+30%高对比高饱和',
 operator:'时间无常→接纳不完美、保留自然肌理；空间虚实→预留负空间、降低密度；天人合一→材质自然化、光影柔和化'
 },
-{id:'F02',name:'超越秩序力场',nameEn:'Transcendent-Order',color:'#a371f7',
+{id:'F02',name:'超越秩序力场',nameEn:'Transcendent-Order',color:'#a371f7',trait:'庄严 · 神圣 · 对称',
 L0:['对未知天地/自然异象的恐惧与敬畏','多神/一神宗教体系约束','游牧/城邦集权社会','追求永恒秩序对抗世俗混乱','以超越世俗获得终极意义'],
 L1:'有限的人类，如何连接无限的宇宙与神圣秩序？如何超越世俗获得永恒意义？',
 L2:'世俗时间短暂虚无，神圣时间永恒恒定。现世为过渡，彼岸为终极',
@@ -206,7 +308,7 @@ variants:['古印度梵境','伊斯兰几何秩序','拜占庭神圣','中式宗
 variantMod:'叙事类 +20%动态对比',
 operator:'宇宙秩序→视觉绝对对称、几何严谨；神圣超越→色彩纯化、光影升维；时空永恒→画面静态稳定'
 },
-{id:'F03',name:'认知解构力场',nameEn:'Cognitive-Deconstruction',color:'#58a6ff',
+{id:'F03',name:'认知解构力场',nameEn:'Cognitive-Deconstruction',color:'#58a6ff',trait:'理性 · 精准 · 几何',
 L0:['海洋贸易地理','资源稀缺需精准规划','城邦竞争环境','崇尚逻辑思辨与实证','以认知突破生存局限'],
 L1:'人类如何通过逻辑、观察、分类、推理，理性认知并改造客观世界？',
 L2:'时间线性向前、迭代进步、可积累、可优化、可验证',
@@ -226,7 +328,7 @@ variants:['古希腊理性','西欧现代主义','工业极简','科技理性','
 variantMod:'人文理性 -20%硬朗，增加柔和',
 operator:'逻辑解构→线条清晰、透视精准；客观认知→色彩去情绪化；线性进步→视觉整洁有序'
 },
-{id:'F04',name:'主体突破力场',nameEn:'Subjective-Breakthrough',color:'#ff7b72',
+{id:'F04',name:'主体突破力场',nameEn:'Subjective-Breakthrough',color:'#ff7b72',trait:'张扬 · 先锋 · 撞色',
 L0:['新大陆无固有秩序','资源广阔且开放','移民文化打破传统束缚','商业竞争驱动创新','崇尚个体奋斗与突破固化规则'],
 L1:'独立个体如何突破传统束缚、打破规则、创造全新可能、实现自我价值？',
 L2:'时间属于个体，未来开放无限。强调创新、迭代、颠覆、突破',
@@ -246,7 +348,7 @@ variants:['美式潮流','街头先锋','赛博未来','年轻潮流','商业创
 variantMod:'高端简约 -25%张扬，平衡先锋与高级',
 operator:'个体自由→打破对称、追求独特；突破创新→色彩大胆碰撞、材质跨界；无限可能→画面开放延伸、充满张力'
 },
-{id:'F05',name:'生命循环力场',nameEn:'Life-Cycle',color:'#3fb950',
+{id:'F05',name:'生命循环力场',nameEn:'Life-Cycle',color:'#3fb950',trait:'自然 · 生机 · 原生',
 L0:['原始自然生存环境','完全依赖自然节律','部落群居模式','无人工改造的稳定环境','生存核心为顺应自然、融入生态循环'],
 L1:'人类如何融入自然循环、敬畏生命节律、与生态共生永续？',
 L2:'季节轮回、生命循环、生生不息。尊重生长、凋零、再生的完整周期',
@@ -266,7 +368,7 @@ variants:['非洲原住民','印第安自然','大洋洲海岛','山野有机','
 variantMod:'商业精致 +20%干净通透，弱化粗糙',
 operator:'生命循环→体现生长、层次、自然肌理；生态共生→光影模拟自然环境；原生质朴→舍弃精致打磨、保留真实'
 },
-{id:'F06',name:'内观超越力场',nameEn:'Introspective-Transcendence',color:'#d2a8ff',
+{id:'F06',name:'内观超越力场',nameEn:'Introspective-Transcendence',color:'#d2a8ff',trait:'空寂 · 极简 · 治愈',
 L0:['资源匮乏','灾害频发','战乱频繁','世俗苦难常态化','宗教修行体系盛行','以内心解脱对抗外部苦难'],
 L1:'人如何面对世间苦难、执念与痛苦，通过内观自省获得解脱与安宁？',
 L2:'现世充满执念与苦痛，短暂虚妄；解脱是超越时间的终极宁静',
@@ -288,288 +390,384 @@ operator:'看破虚妄→删减元素、极致极简；内观解脱→色彩灰�
 }
 ];
 const PRESETS=[
-{name:'中国茶品牌',prop:'茶品牌视觉设计',weights:[70,0,10,0,20,0]},
-{name:'日本建筑空间',prop:'建筑空间设计',weights:[50,15,0,0,0,35]},
-{name:'美国科技产品',prop:'科技产品视觉',weights:[10,0,30,60,0,0]},
-{name:'宋式美学',prop:'宋式器物与空间',weights:[60,0,25,0,15,0]},
-{name:'侘寂空间',prop:'侘寂美学空间',weights:[30,0,0,0,15,55]},
-{name:'新中式品牌',prop:'新中式品牌视觉',weights:[50,0,20,30,0,0]},
-{name:'未来主义设计',prop:'未来主义产品概念',weights:[0,20,35,45,0,0]},
-{name:'北欧极简科技',prop:'北欧极简科技产品',weights:[35,0,40,0,25,0]},
-{name:'有机食品品牌',prop:'有机食品包装视觉',weights:[30,0,15,0,55,0]},
-{name:'生态包装设计',prop:'可持续生态包装',weights:[30,0,0,0,50,20]},
-{name:'宗教艺术',prop:'宗教主题艺术创作',weights:[15,55,0,0,0,30]},
-{name:'禅意空间',prop:'禅意室内空间',weights:[35,0,0,0,15,50]},
-{name:'冥想品牌',prop:'冥想产品品牌视觉',weights:[25,0,0,0,30,45]},
-{name:'国潮美妆',prop:'国潮美妆产品视觉',weights:[40,0,0,35,25,0]},
-{name:'赛博东方',prop:'赛博朋克东方城市',weights:[30,0,30,40,0,0]},
-{name:'暗黑奢华',prop:'暗黑奢华品牌视觉',weights:[0,35,0,35,0,30]}
+{name:'中国茶品牌',icon:'🍵',cat:'品牌视觉',desc:'新中式茶品牌的温润高级感',prop:'茶品牌视觉设计',weights:[70,0,10,0,20,0]},
+{name:'咖啡品牌',icon:'☕',cat:'品牌视觉',desc:'精品咖啡的质感与温度',prop:'精品咖啡品牌视觉',weights:[50,0,20,0,30,0]},
+{name:'新中式品牌',icon:'🏮',cat:'品牌视觉',desc:'东方底蕴×现代审美的品牌',prop:'新中式生活方式品牌视觉',weights:[50,0,20,30,0,0]},
+{name:'国潮美妆',icon:'💄',cat:'品牌视觉',desc:'东方元素×潮流玩法的美妆',prop:'国潮美妆产品视觉',weights:[40,0,0,35,25,0]},
+{name:'北欧极简',icon:'🪑',cat:'品牌视觉',desc:'冷静克制的斯堪的纳维亚风',prop:'北欧极简品牌视觉',weights:[35,0,40,0,25,0]},
+{name:'暗黑奢华',icon:'🖤',cat:'品牌视觉',desc:'低调神秘的高级质感',prop:'暗黑奢华品牌视觉',weights:[0,35,0,35,0,30]},
+{name:'冥想品牌',icon:'🧘',cat:'品牌视觉',desc:'疗愈松弛的精神品牌',prop:'冥想疗愈品牌视觉',weights:[25,0,0,0,30,45]},
+{name:'有机食品',icon:'🌾',cat:'品牌视觉',desc:'天然可信赖的食物品牌',prop:'有机食品品牌视觉',weights:[30,0,15,0,55,0]},
+{name:'街头潮牌',icon:'🧢',cat:'品牌视觉',desc:'年轻张扬的街头文化',prop:'街头潮流品牌视觉',weights:[10,0,10,60,20,0]},
+{name:'环保品牌',icon:'♻️',cat:'品牌视觉',desc:'可持续理念的自然表达',prop:'可持续环保品牌视觉',weights:[30,0,10,0,40,20]},
+{name:'日式侘寂',icon:'🍂',cat:'品牌视觉',desc:'不完美之美的高级留白',prop:'日式侘寂品牌视觉',weights:[30,0,0,0,15,55]},
+{name:'宗教艺术',icon:'🕍',cat:'品牌视觉',desc:'神圣庄严的文化调性',prop:'宗教文化衍生品牌视觉',weights:[15,55,0,0,0,30]},
+{name:'赛博东方',icon:'🤖',cat:'品牌视觉',desc:'东方符号×未来科技碰撞',prop:'赛博朋克东方品牌视觉',weights:[30,0,30,40,0,0]},
+{name:'未来科技',icon:'🚀',cat:'品牌视觉',desc:'理性先锋的科技感',prop:'科技产品品牌视觉',weights:[10,0,30,60,0,0]},
+{name:'手工银器',icon:'📿',cat:'产品摄影',desc:'突出匠艺细节的器物摄影',prop:'手工银器工作室产品摄影',weights:[30,0,10,35,25,0]},
+{name:'珠宝首饰',icon:'💎',cat:'产品摄影',desc:'璀璨夺目又不失格调',prop:'珠宝首饰产品摄影',weights:[20,30,0,35,15,0]},
+{name:'陶瓷器皿',icon:'🏺',cat:'产品摄影',desc:'器物的温润与线条',prop:'陶瓷器物产品摄影',weights:[50,10,0,0,40,0]},
+{name:'科技产品',icon:'📱',cat:'产品摄影',desc:'精准干净的工业质感',prop:'数码科技产品摄影',weights:[10,0,35,50,5,0]},
+{name:'美食摄影',icon:'🍜',cat:'产品摄影',desc:'勾起食欲的光影与色彩',prop:'餐饮美食产品摄影',weights:[40,0,10,20,30,0]},
+{name:'美妆产品',icon:'🧴',cat:'产品摄影',desc:'柔美精致的产品氛围',prop:'美妆产品摄影',weights:[30,10,10,40,10,0]},
+{name:'家居软装',icon:'🛋️',cat:'产品摄影',desc:'生活场景的松弛质感',prop:'家居软装产品摄影',weights:[35,0,20,15,30,0]},
+{name:'潮玩手办',icon:'🧸',cat:'产品摄影',desc:'个性收藏品的舞台感',prop:'潮玩手办产品摄影',weights:[5,5,10,70,10,0]},
+{name:'茶室空间',icon:'🍵',cat:'空间设计',desc:'安静雅致的东方茶空间',prop:'东方茶室空间设计',weights:[60,10,0,0,15,15]},
+{name:'侘寂民宿',icon:'🏡',cat:'空间设计',desc:'有岁月感的山居度假空间',prop:'侘寂风民宿空间设计',weights:[30,0,0,0,15,55]},
+{name:'雨林咖啡馆',icon:'🌴',cat:'空间设计',desc:'借雨林不搬雨林的生态感',prop:'雨林系咖啡馆空间设计',weights:[40,0,0,0,40,20]},
+{name:'禅意冥想室',icon:'🕉️',cat:'空间设计',desc:'让人静下来的空寂空间',prop:'禅意冥想空间设计',weights:[35,0,0,0,15,50]},
+{name:'科技展厅',icon:'🛰️',cat:'空间设计',desc:'未来感的沉浸体验空间',prop:'科技感展厅空间设计',weights:[0,20,35,45,0,0]},
+{name:'北欧公寓',icon:'🪟',cat:'空间设计',desc:'明亮通透的极简生活',prop:'北欧风公寓空间设计',weights:[35,0,40,0,25,0]},
+{name:'中式庭院',icon:'⛩️',cat:'空间设计',desc:'移步换景的东方园林',prop:'新中式庭院空间设计',weights:[55,10,0,10,15,10]},
+{name:'酒店大堂',icon:'🏨',cat:'空间设计',desc:'大气尊贵的迎宾气场',prop:'高端酒店大堂空间设计',weights:[30,25,0,30,15,0]},
+{name:'茶叶包装',icon:'🍃',cat:'包装设计',desc:'茶香与山野的诗意包装',prop:'茶叶包装设计',weights:[60,0,15,0,25,0]},
+{name:'生态包装',icon:'🌿',cat:'包装设计',desc:'绿色可持续的材质表达',prop:'可持续生态包装设计',weights:[30,0,0,0,50,20]},
+{name:'酒类包装',icon:'🍷',cat:'包装设计',desc:'醇厚有年份的尊贵感',prop:'精品酒类包装设计',weights:[20,30,0,40,10,0]},
+{name:'香氛包装',icon:'🌸',cat:'包装设计',desc:'气味可见的感官设计',prop:'香氛礼盒包装设计',weights:[25,10,0,30,20,15]},
+{name:'文创包装',icon:'📚',cat:'包装设计',desc:'文化底蕴的礼物质感',prop:'文创礼盒包装设计',weights:[45,5,15,25,10,0]},
+{name:'母婴包装',icon:'🍼',cat:'包装设计',desc:'柔软安心的亲和力',prop:'母婴产品包装设计',weights:[40,0,20,10,30,0]},
+{name:'发布会视觉',icon:'🎤',cat:'创意延伸',desc:'点燃全场的主视觉',prop:'新品发布会主视觉设计',weights:[10,20,30,40,0,0]},
+{name:'展览海报',icon:'🖼️',cat:'创意延伸',desc:'有艺术张力的海报',prop:'艺术展览海报设计',weights:[30,20,20,30,0,0]},
+{name:'网站首屏',icon:'💻',cat:'创意延伸',desc:'品牌网站的第一印象',prop:'品牌官网首页首屏设计',weights:[35,0,30,35,0,0]},
+{name:'电商详情页',icon:'🛒',cat:'创意延伸',desc:'转化导向的卖货页面',prop:'电商产品详情页视觉',weights:[25,0,15,45,15,0]},
+{name:'社媒配图',icon:'📸',cat:'创意延伸',desc:'刷到就想点赞的品牌图',prop:'社交媒体品牌配图',weights:[30,0,10,35,25,0]},
+{name:'电影海报',icon:'🎬',cat:'创意延伸',desc:'有故事感的视觉叙事',prop:'电影海报概念设计',weights:[15,35,20,30,0,0]}
 ];
 const LAYER_NAMES=['L0 文明形成压力','L1 核心存在命题','L2 时间模型','L3 空间模型','L4 自我关系','L5 自然关系','L6 心理基调','L7 审美概率算法','L8 视觉参数'];
 const LAYER_KEYS=['L0','L1','L2','L3','L4','L5','L6','L7','L8'];
 const DIM_NAMES={light:'光影',comp:'构图',color:'色彩',mat:'材质',rhythm:'节奏'};
 const DIM_KEYS=['light','comp','color','mat','rhythm'];
 let weights=[70,0,10,0,20,0];
-function init(){
-const sc=document.getElementById('sliders');
-FORCES.forEach((f,i)=>{
-const row=document.createElement('div');
-row.className='force-row';
-row.innerHTML=`<div class="force-label"><span class="force-dot" style="background:${f.color}"></span><span class="force-name">${f.name}</span><span class="force-pct" id="pct${i}">${weights[i]}%</span></div><input type="range" class="slider" id="sl${i}" min="0" max="100" value="${weights[i]}" style="background:${f.color};accent-color:${f.color}" oninput="onSlider(${i},this.value)">`;
-sc.appendChild(row);
-});
-renderWeightBars();
+
+/* ===== 预设渲染 ===== */
+function renderPresets(){
+  const wrap=document.getElementById('presetWrap');
+  const cats=[...new Set(PRESETS.map(p=>p.cat))];
+  let html='';
+  cats.forEach(cat=>{
+    html+=`<div class="pcat">${cat}</div><div class="preset-scroll">`;
+    PRESETS.forEach((p,i)=>{
+      if(p.cat!==cat)return;
+      html+=`<button class="preset-btn" data-idx="${i}" onclick="applyPreset(${i})"><span class="pb-name">${p.icon} ${p.name}</span><span class="pb-desc">${p.desc}</span></button>`;
+    });
+    html+=`</div>`;
+  });
+  wrap.innerHTML=html;
 }
-function onSlider(i,val){
-weights[i]=parseInt(val);
-normalize(i);
-renderWeightBars();
+
+/* ===== 力场卡片渲染 ===== */
+function renderForces(){
+  const grid=document.getElementById('forceGrid');
+  let html='';
+  FORCES.forEach((f,i)=>{
+    html+=`<div class="force-card ${weights[i]>0?'on':''}" id="fc${i}" onclick="toggleForce(${i})" style="border-color:${weights[i]>0?f.color+'88':'var(--line)'}">
+      <div class="fc-head"><span class="fc-dot" style="background:${f.color}"></span><span class="fc-name">${f.name.replace('力场','')}</span></div>
+      <div class="fc-trait">${f.trait}</div>
+      <div class="fc-pct" style="color:${f.color}">${weights[i]}%</div>
+      <div class="fc-ctl" onclick="event.stopPropagation()">
+        <button onclick="adjWeight(${i},-5)">−</button>
+        <div class="fc-bar"><i style="width:${weights[i]}%;background:${f.color}"></i></div>
+        <button onclick="adjWeight(${i},5)">+</button>
+        <span class="fc-val">${weights[i]}%</span>
+      </div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+  updateReadout();
 }
-function normalize(exclude){
-const sum=weights.reduce((a,b)=>a+b,0);
-if(sum===0){weights[exclude]=100;return;}
-if(sum===100)return;
-const diff=sum-100;
-const others=weights.reduce((a,b,i)=>i===exclude?a:a+b,0);
-if(others===0){weights[exclude]=100;return;}
-for(let i=0;i<6;i++){
-if(i===exclude)continue;
-const ratio=weights[i]/others;
-weights[i]=Math.max(0,Math.round(weights[i]-diff*ratio));
+
+/* ===== 交互 ===== */
+function toggleForce(i){
+  if(weights[i]>0){weights[i]=0;}
+  else{weights[i]=Math.max(1,Math.round(100/(weights.filter(w=>w>0).length+1)));}
+  const sum=weights.reduce((a,b)=>a+b,0);
+  if(sum!==100){weights[0]+=100-weights.reduce((a,b)=>a+b,0);if(weights[0]<0)weights[0]=0;}
+  renderForces();
+  if(weights.some(w=>w>0))runEngine();
 }
-const finalSum=weights.reduce((a,b)=>a+b,0);
-weights[exclude]+=100-finalSum;
-weights[exclude]=Math.max(0,weights[exclude]);
-FORCES.forEach((f,i)=>{
-document.getElementById('sl'+i).value=weights[i];
-document.getElementById('pct'+i).textContent=weights[i]+'%';
-});
-}
-function renderWeightBars(){
-FORCES.forEach((f,i)=>{
-const el=document.getElementById('pct'+i);
-if(el)el.textContent=weights[i]+'%';
-const sl=document.getElementById('sl'+i);
-if(sl)sl.value=weights[i];
-});
+function adjWeight(i,delta){
+  const others=weights.reduce((a,b,idx)=>idx===i?a:a+b,0);
+  let target=weights[i]+delta;
+  if(target<0)target=0;
+  if(target>100)target=100;
+  const diff=target-weights[i];
+  if(others===0){weights[i]=100;renderForces();return;}
+  const newSum=weights.reduce((a,b,idx)=>idx===i?a:a+b,0)+target;
+  if(newSum===0)return;
+  weights[i]=target;
+  const over=newSum-100;
+  if(over!==0){
+    let rest=others;
+    for(let k=0;k<6;k++){
+      if(k===i)continue;
+      const share=weights[k]/rest;
+      weights[k]=Math.max(0,Math.round(weights[k]-over*share));
+    }
+    let s=weights.reduce((a,b)=>a+b,0);
+    if(s!==100&&weights[i]>=0){weights[i]+=100-s;weights[i]=Math.max(0,weights[i]);}
+  }
+  renderForces();
+  runEngine();
 }
 function applyPreset(idx){
-const p=PRESETS[idx];
-weights=[...p.weights];
-document.getElementById('propInput').value=p.prop;
-document.querySelectorAll('.preset-btn').forEach(b=>{
-const bIdx=parseInt(b.getAttribute('data-idx'));
-b.classList.toggle('active',bIdx===idx);
-});
-renderWeightBars();
-runEngine();
+  const p=PRESETS[idx];
+  weights=[...p.weights];
+  document.getElementById('propInput').value=p.prop;
+  document.querySelectorAll('.preset-btn').forEach(b=>{
+    b.classList.toggle('active',parseInt(b.getAttribute('data-idx'))===idx);
+  });
+  renderForces();
+  runEngine();
+}
+function randomize(){
+  const pick=()=>Math.round(Math.random()*10)+5;
+  let w=FORCES.map(()=>Math.random()*10);
+  const t=w.reduce((a,b)=>a+b,0);
+  weights=w.map(x=>Math.max(1,Math.round(x/t*100)));
+  let s=weights.reduce((a,b)=>a+b,0);
+  weights[0]+=100-s;if(weights[0]<0)weights[0]=0;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  renderForces();
+  runEngine();
 }
 function resetWeights(){
-weights=[100,0,0,0,0,0];
-document.getElementById('propInput').value='';
-document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-renderWeightBars();
-document.getElementById('pipeline').innerHTML='<div class="scroll-hint">已重置，调整权重后运行引擎</div>';
-document.getElementById('outputArea').style.display='none';
-document.getElementById('promptBox').style.display='none';
-document.getElementById('whyBox').style.display='none';
+  weights=[100,0,0,0,0,0];
+  document.getElementById('propInput').value='';
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  renderForces();
+  showEmpty();
 }
+function updateReadout(){
+  const el=document.getElementById('readout');
+  const act=getActiveForces();
+  if(act.length===0){el.textContent='👉 点击上方力场卡片，组合你想要的气质（可多选）';return;}
+  const lead=act[0];
+  const role=lead.weight>=40?'为主':(lead.weight>=30?'偏重':'点缀');
+  let s=`以「${lead.force.name.replace('力场','')}」${role} ${lead.weight}%`;
+  if(act.length>1){
+    const sec=act[1];
+    const r2=sec.weight>=25?'为辅':(sec.weight>=15?'微调':'点缀');
+    s+=`，${sec.force.name.replace('力场','')}${r2} ${sec.weight}%`;
+  }
+  if(act.length>2)s+=`，另含 ${act.slice(2).map(a=>a.force.name.replace('力场','')+' '+a.weight+'%').join('、')}`;
+  const tags=act.slice(0,2).map(a=>a.force.L6.split('、').slice(0,2).join('·'));
+  s+=`　→ 气质 ≈ ${tags.join(' × ')}`;
+  el.textContent=s;
+}
+
+/* ===== 引擎核心（原逻辑保留） ===== */
 function getActiveForces(){
-return weights.map((w,i)=>({force:FORCES[i],weight:w,idx:i})).filter(x=>x.weight>0).sort((a,b)=>b.weight-a.weight);
+  return weights.map((w,i)=>({force:FORCES[i],weight:w,idx:i})).filter(x=>x.weight>0).sort((a,b)=>b.weight-a.weight);
 }
 function blendL7(){
-const result={};
-for(const dim of DIM_KEYS){
-const entries=[];
-for(let i=0;i<6;i++){
-if(weights[i]===0)continue;
-const f=FORCES[i];
-const d=f.L7[dim];
-entries.push({text:d.d,score:weights[i]*d.dp/100,source:f.name,color:f.color,isVariant:false,weight:weights[i]});
-if(d.vp>0)entries.push({text:d.v,score:weights[i]*d.vp/100,source:f.name,color:f.color,isVariant:true,weight:weights[i]});
-}
-entries.sort((a,b)=>b.score-a.score);
-result[dim]=entries.filter(e=>e.score>0).slice(0,3);
-}
-return result;
+  const result={};
+  for(const dim of DIM_KEYS){
+    const entries=[];
+    for(let i=0;i<6;i++){
+      if(weights[i]===0)continue;
+      const f=FORCES[i];
+      const d=f.L7[dim];
+      entries.push({text:d.d,score:weights[i]*d.dp/100,source:f.name,color:f.color,isVariant:false,weight:weights[i]});
+      if(d.vp>0)entries.push({text:d.v,score:weights[i]*d.vp/100,source:f.name,color:f.color,isVariant:true,weight:weights[i]});
+    }
+    entries.sort((a,b)=>b.score-a.score);
+    result[dim]=entries.filter(e=>e.score>0).slice(0,3);
+  }
+  return result;
 }
 function runEngine(){
-const active=getActiveForces();
-if(active.length===0||active[0].weight===0){alert('请至少设置一个力场权重');return;}
-const prop=document.getElementById('propInput').value||'未指定命题';
-const dominant=active[0];
-const blend=blendL7();
-renderPipeline(active,blend,prop);
-renderOutput(active,blend,prop);
-renderPrompt(active,blend,prop);
-renderWhyLayer(active,prop);
-document.getElementById('outputArea').style.display='grid';
-document.getElementById('promptBox').style.display='block';
-document.getElementById('whyBox').style.display='block';
+  const active=getActiveForces();
+  if(active.length===0||active[0].weight===0){alert('请至少选择一个力场');return;}
+  const prop=document.getElementById('propInput').value||'未指定命题';
+  const dominant=active[0];
+  const blend=blendL7();
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('resultBody').style.display='block';
+  document.getElementById('resTag').textContent=`${dominant.force.name.replace('力场','')}为主 · ${prop}`;
+  renderPipeline(active,blend,prop);
+  renderOutput(active,blend,prop);
+  renderPrompt(active,blend,prop);
+  renderWhyLayer(active,prop);
+  document.getElementById('outputArea').style.display='grid';
+  document.getElementById('promptBox').style.display='block';
+  document.getElementById('whyBox').style.display='block';
+  document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  if(typeof logUsage==='function')logUsage(weights,prop);
 }
 function renderPipeline(active,blend,prop){
-const pipe=document.getElementById('pipeLine')||document.getElementById('pipeline');
-const dominant=active[0];
-let html='';
-const layerColors=['#f0883e','#a371f7','#58a6ff','#ff7b72','#3fb950','#d2a8ff'];
-for(let li=0;li<9;li++){
-const key=LAYER_KEYS[li];
-const dom=dominant.force;
-const domColor=dom.color;
-let text='';
-if(li<7){
-const fieldVal=dom[key];
-if(li===0){
-text=fieldVal.join('、');
-}else{
-text=fieldVal;
-}
-const modifiers=active.slice(1).filter(a=>a.weight>=10);
-let modHtml='';
-if(modifiers.length>0&&li>=1&&li<=6){
-modHtml=modifiers.map(m=>`<span class="modifier"> + ${m.force.name}(${m.weight}%): ${m.force[key]}</span>`).join('');
-}
-html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">${LAYER_KEYS[li]}</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[li]}</div><div class="layer-text">${text}${modHtml}</div></div></div>`;
-}else if(li===7){
-let dimHtml='<div class="dim-grid">';
-for(const dim of DIM_KEYS){
-const entries=blend[dim];
-if(!entries||entries.length===0)continue;
-const top=entries[0];
-const pct=Math.round(top.score);
-dimHtml+=`<div class="dim-card"><div class="dim-name">${DIM_NAMES[dim]}</div><div class="dim-val">${top.text}</div><div class="dim-bar"><div class="dim-fill" style="width:${pct}%;background:${top.color}"></div></div><div style="font-size:10px;color:var(--txt3);margin-top:2px">${pct}% ${top.isVariant?'(变体)':''} · ${top.source}</div>`;
-if(entries[1]&&entries[1].score>3){
-const p2=Math.round(entries[1].score);
-dimHtml+=`<div style="font-size:10px;color:var(--txt2);margin-top:2px">+ ${entries[1].text} (${p2}%)</div>`;
-}
-dimHtml+=`</div>`;
-}
-dimHtml+='</div>';
-html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">L7</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[7]}</div>${dimHtml}</div></div>`;
-}else{
-let vpHtml='<div class="v-params">';
-const l8=dom.L8;
-const l8Entries=Object.entries(l8);
-const l8Labels={light:'光影',contrast:'对比',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
-for(const[k,v]of l8Entries){
-vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
-}
-vpHtml+='</div>';
-const modifiers=active.slice(1).filter(a=>a.weight>=10);
-let modHtml='';
-if(modifiers.length>0){
-modHtml='<div style="margin-top:6px;font-size:11px;color:var(--amber)">修饰: '+modifiers.map(m=>`${m.force.name}(${m.weight}%) → ${m.force.L8.mood}`).join('； ')+'</div>';
-}
-html+=`<div class="layer"><div class="layer-num" style="background:${domColor}22;color:${domColor}">L8</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[8]}</div>${vpHtml}${modHtml}</div></div>`;
-}
-}
-pipe.innerHTML=html;
+  const pipe=document.getElementById('pipeline');
+  const dominant=active[0];
+  let html='';
+  for(let li=0;li<9;li++){
+    const key=LAYER_KEYS[li];
+    const dom=dominant.force;
+    const domColor=dom.color;
+    let text='';
+    const delay=li*60;
+    if(li<7){
+      const fieldVal=dom[key];
+      text=li===0?fieldVal.join('、'):fieldVal;
+      const modifiers=active.slice(1).filter(a=>a.weight>=10);
+      let modHtml='';
+      if(modifiers.length>0&&li>=1&&li<=6){
+        modHtml=modifiers.map(m=>`<span class="modifier"> + ${m.force.name}(${m.weight}%): ${m.force[key]}</span>`).join('');
+      }
+      html+=`<div class="layer" style="animation-delay:${delay}ms"><div class="layer-num" style="background:${domColor}1a;color:${domColor}">${LAYER_KEYS[li]}</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[li]}</div><div class="layer-text">${text}${modHtml}</div></div></div>`;
+    }else if(li===7){
+      let dimHtml='<div class="dim-grid">';
+      for(const dim of DIM_KEYS){
+        const entries=blend[dim];
+        if(!entries||entries.length===0)continue;
+        const top=entries[0];
+        const pct=Math.round(top.score);
+        dimHtml+=`<div class="dim-card"><div class="dim-name">${DIM_NAMES[dim]}</div><div class="dim-val">${top.text}</div><div class="dim-bar"><div class="dim-fill" style="width:${pct}%;background:${top.color}"></div></div><div class="dim-meta">${pct}% ${top.isVariant?'(变体)':''} · ${top.source.replace('力场','')}</div>`;
+        if(entries[1]&&entries[1].score>3){
+          dimHtml+=`<div class="dim-alt">+ ${entries[1].text} (${Math.round(entries[1].score)}%)</div>`;
+        }
+        dimHtml+=`</div>`;
+      }
+      dimHtml+='</div>';
+      html+=`<div class="layer" style="animation-delay:${delay}ms"><div class="layer-num" style="background:${domColor}1a;color:${domColor}">L7</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[7]}</div>${dimHtml}</div></div>`;
+    }else{
+      let vpHtml='<div class="v-params">';
+      const l8=dom.L8;
+      const l8Labels={light:'光影',contrast:'对比',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
+      for(const[k,v]of Object.entries(l8)){
+        vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
+      }
+      vpHtml+='</div>';
+      const modifiers=active.slice(1).filter(a=>a.weight>=10);
+      let modHtml='';
+      if(modifiers.length>0){
+        modHtml='<div style="margin-top:6px;font-size:11px;color:var(--gold)">修饰: '+modifiers.map(m=>`${m.force.name}(${m.weight}%) → ${m.force.L8.mood}`).join('； ')+'</div>';
+      }
+      html+=`<div class="layer" style="animation-delay:${delay}ms"><div class="layer-num" style="background:${domColor}1a;color:${domColor}">L8</div><div class="layer-content"><div class="layer-title">${LAYER_NAMES[8]}</div>${vpHtml}${modHtml}</div></div>`;
+    }
+  }
+  pipe.innerHTML=html;
 }
 function renderOutput(active,blend,prop){
-const dominant=active[0];
-const l8=dominant.force.L8;
-const l8Labels={light:'光影',contrast:'对比度',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
-let vpHtml='';
-let vpText='';
-for(const[k,v]of Object.entries(l8)){
-vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
-vpText+=`${l8Labels[k]||k}: ${v}\n`;
-}
-const modifiers=active.slice(1).filter(a=>a.weight>=10);
-if(modifiers.length>0){
-vpHtml+=`<div style="grid-column:1/-1;font-size:11px;color:var(--amber);margin-top:4px">+ ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('； ')}</div>`;
-vpText+=`\n修饰: ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('; ')}`;
-}
-document.getElementById('vParams').innerHTML=vpHtml;
-document.getElementById('vParamsText').textContent=vpText;
-let neg='overexposed, underexposed, blurry, low resolution, noise, watermark, text, logo, deformed, distorted, cropped, out of frame, duplicate, artifact, color cast, compression artifacts, unnatural lighting, plastic skin';
-if(dominant.force.id==='F01')neg+=', oily shine, fake skin, heavy foundation, plastic food look';
-if(dominant.force.id==='F04')neg+=', dull, boring, flat, outdated, generic, stock photo look';
-if(dominant.force.id==='F06')neg+=', cluttered, busy, chaotic, harsh lighting, saturated colors';
-document.getElementById('negText').textContent=neg;
+  const dominant=active[0];
+  const l8=dominant.force.L8;
+  const l8Labels={light:'光影',contrast:'对比度',comp:'构图',angle:'视角',color:'色彩',material:'材质',mood:'氛围'};
+  let vpHtml='';
+  let vpText='';
+  for(const[k,v]of Object.entries(l8)){
+    vpHtml+=`<div class="v-param"><span class="v-key">${l8Labels[k]||k}</span><span class="v-val">${v}</span></div>`;
+    vpText+=`${l8Labels[k]||k}: ${v}\n`;
+  }
+  const modifiers=active.slice(1).filter(a=>a.weight>=10);
+  if(modifiers.length>0){
+    vpHtml+=`<div style="grid-column:1/-1;font-size:11px;color:var(--gold);margin-top:4px">+ ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('； ')}</div>`;
+    vpText+=`\n修饰: ${modifiers.map(m=>`${m.force.name}(${m.weight}%): ${m.force.L8.mood}`).join('; ')}`;
+  }
+  document.getElementById('vParams').innerHTML=vpHtml;
+  document.getElementById('vParamsText').textContent=vpText;
+  let neg='overexposed, underexposed, blurry, low resolution, noise, watermark, text, logo, deformed, distorted, cropped, out of frame, duplicate, artifact, color cast, compression artifacts, unnatural lighting, plastic skin';
+  if(dominant.force.id==='F01')neg+=', oily shine, fake skin, heavy foundation, plastic food look';
+  if(dominant.force.id==='F04')neg+=', dull, boring, flat, outdated, generic, stock photo look';
+  if(dominant.force.id==='F06')neg+=', cluttered, busy, chaotic, harsh lighting, saturated colors';
+  document.getElementById('negText').textContent=neg;
 }
 function renderPrompt(active,blend,prop){
-const dominant=active[0];
-const l8=dominant.force.L8;
-const tones=active.filter(a=>a.weight>=5).map(a=>a.force.L6);
-const variants=dominant.force.variants;
-const topVariant=variants[0];
-let prompt=`${prop}, `;
-prompt+=`${blend.light[0].text}, `;
-prompt+=`${blend.comp[0].text}, `;
-prompt+=`${blend.color[0].text}, `;
-prompt+=`${blend.mat[0].text}, `;
-prompt+=`${l8.light}, ${l8.contrast}, ${l8.comp}, ${l8.angle}, ${l8.color}, ${l8.material}, `;
-prompt+=`mood: ${tones.join(', ')}, `;
-prompt+=`${l8.mood}`;
-if(active.length>1){
-prompt+=`, blended with ${active.slice(1).map(a=>`${a.force.name}(${a.weight}%)`).join(' + ')}`;
-}
-prompt+=`, ${topVariant} style, `;
-prompt+=`high quality, 8K, professional, cinematic, detailed`;
-document.getElementById('promptText').textContent=prompt;
+  const dominant=active[0];
+  const l8=dominant.force.L8;
+  const tones=active.filter(a=>a.weight>=5).map(a=>a.force.L6);
+  const variants=dominant.force.variants;
+  const topVariant=variants[0];
+  let prompt=`${prop}, `;
+  prompt+=`${blend.light[0].text}, `;
+  prompt+=`${blend.comp[0].text}, `;
+  prompt+=`${blend.color[0].text}, `;
+  prompt+=`${blend.mat[0].text}, `;
+  prompt+=`${l8.light}, ${l8.contrast}, ${l8.comp}, ${l8.angle}, ${l8.color}, ${l8.material}, `;
+  prompt+=`mood: ${tones.join(', ')}, `;
+  prompt+=`${l8.mood}`;
+  if(active.length>1){
+    prompt+=`, blended with ${active.slice(1).map(a=>`${a.force.name}(${a.weight}%)`).join(' + ')}`;
+  }
+  prompt+=`, ${topVariant} style, `;
+  prompt+=`high quality, 8K, professional, cinematic, detailed`;
+  document.getElementById('promptText').textContent=prompt;
 }
 function renderWhyLayer(active,prop){
-const dominant=active[0];
-const f=dominant.force;
-let html=`<div style="margin-bottom:8px"><strong style="color:${f.color}">${f.name} ${dominant.weight}%</strong> — 主导力场`;
-if(active.length>1){
-html+=active.slice(1).map(a=>`<br><span style="color:${a.force.color}">${a.force.name} ${a.weight}%</span> — ${a.weight>=15?'修饰':'点缀'}`).join('');
+  const dominant=active[0];
+  const f=dominant.force;
+  let html=`<div style="margin-bottom:8px"><strong style="color:${f.color}">${f.name} ${dominant.weight}%</strong> — 主导力场`;
+  if(active.length>1){
+    html+=active.slice(1).map(a=>`<br><span style="color:${a.force.color}">${a.force.name} ${a.weight}%</span> — ${a.weight>=15?'修饰':'点缀'}`).join('');
+  }
+  html+=`</div>`;
+  html+=`<div style="margin:8px 0;font-size:11px;color:var(--txt3)">命题: ${prop}</div>`;
+  html+=`<div style="font-size:11px;color:var(--gold);margin-bottom:6px">${f.variantMod}</div>`;
+  const chain=[
+    {label:'L0 文明形成压力',text:f.L0.join(' → '),isDom:true},
+    {label:'L1 存在命题',text:f.L1,isDom:true},
+    {label:'L2 时间模型',text:f.L2,isDom:true},
+    {label:'L3 空间模型',text:f.L3,isDom:true},
+    {label:'L4 自我关系',text:f.L4,isDom:true},
+    {label:'L5 自然关系',text:f.L5,isDom:true},
+    {label:'L6 心理基调',text:f.L6,isDom:true},
+    {label:'L7 审美算法',text:f.operator,isDom:true},
+    {label:'L8 视觉参数',text:`${f.L8.light} / ${f.L8.contrast} / ${f.L8.comp} / ${f.L8.color} / ${f.L8.material} / ${f.L8.mood}`,isDom:true}
+  ];
+  html+='<div style="font-size:11px;color:var(--txt3);margin-bottom:4px">完整因果链路:</div>';
+  for(const step of chain){
+    html+=`<div class="chain-step ${step.isDom?'dominant':''}"><span class="step-label">${step.label}</span><br><span class="step-text">${step.text}</span></div>`;
+  }
+  if(active.length>1){
+    html+='<div style="margin-top:10px;font-size:11px;color:var(--txt3);margin-bottom:4px">修饰力场贡献:</div>';
+    for(const a of active.slice(1)){
+      html+=`<div class="chain-step modifier"><span class="step-label" style="color:${a.force.color}">${a.force.name} (${a.weight}%)</span><br><span class="step-text">${a.force.operator}</span></div>`;
+    }
+  }
+  document.getElementById('whyChain').innerHTML=html;
 }
-html+=`</div>`;
-html+=`<div style="margin:8px 0;font-size:11px;color:var(--txt3)">命题: ${prop}</div>`;
-html+=`<div style="font-size:11px;color:var(--amber);margin-bottom:6px">${f.variantMod}</div>`;
-const chain=[
-{label:'L0 文明形成压力',text:f.L0.join(' → '),isDom:true},
-{label:'L1 存在命题',text:f.L1,isDom:true},
-{label:'L2 时间模型',text:f.L2,isDom:true},
-{label:'L3 空间模型',text:f.L3,isDom:true},
-{label:'L4 自我关系',text:f.L4,isDom:true},
-{label:'L5 自然关系',text:f.L5,isDom:true},
-{label:'L6 心理基调',text:f.L6,isDom:true},
-{label:'L7 审美算法',text:f.operator,isDom:true},
-{label:'L8 视觉参数',text:`${f.L8.light} / ${f.L8.contrast} / ${f.L8.comp} / ${f.L8.color} / ${f.L8.material} / ${f.L8.mood}`,isDom:true}
-];
-html+='<div style="font-size:11px;color:var(--txt3);margin-bottom:4px">完整因果链路:</div>';
-for(const step of chain){
-html+=`<div class="chain-step ${step.isDom?'dominant':''}"><span class="step-label">${step.label}</span><br><span class="step-text">${step.text}</span></div>`;
+function showEmpty(){
+  document.getElementById('emptyState').style.display='block';
+  document.getElementById('resultBody').style.display='none';
 }
-if(active.length>1){
-html+='<div style="margin-top:10px;font-size:11px;color:var(--txt3);margin-bottom:4px">修饰力场贡献:</div>';
-for(const a of active.slice(1)){
-html+=`<div class="chain-step modifier"><span class="step-label" style="color:${a.force.color}">${a.force.name} (${a.weight}%)</span><br><span class="step-text">${a.force.operator}</span></div>`;
-}
-}
-document.getElementById('whyChain').innerHTML=html;
-}
+
+/* ===== 工具 ===== */
 function copyText(text){
-if(navigator.clipboard){
-navigator.clipboard.writeText(text).then(()=>showToast('已复制')).catch(()=>fallbackCopy(text));
-}else{fallbackCopy(text);}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast('已复制')).catch(()=>fallbackCopy(text));
+  }else{fallbackCopy(text);}
 }
 function fallbackCopy(text){
-const ta=document.createElement('textarea');
-ta.value=text;
-ta.style.position='fixed';ta.style.opacity=0;
-document.body.appendChild(ta);ta.select();
-try{document.execCommand('copy');showToast('已复制')}catch(e){showToast('复制失败')}
-document.body.removeChild(ta);
+  const ta=document.createElement('textarea');
+  ta.value=text;
+  ta.style.position='fixed';ta.style.opacity=0;
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('已复制')}catch(e){showToast('复制失败')}
+  document.body.removeChild(ta);
 }
 function showToast(msg){
-const t=document.createElement('div');
-t.textContent=msg;
-t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f6feb;color:#fff;padding:8px 20px;border-radius:6px;font-size:13px;z-index:9999;animation:fadeIn .2s';
-document.body.appendChild(t);
-setTimeout(()=>t.remove(),2000);
+  const t=document.createElement('div');
+  t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#1d1d1f;color:#fff;padding:9px 22px;border-radius:999px;font-size:13px;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,.2);animation:fadeUp .2s ease';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),1800);
 }
-init();
+
+/* 使用记录（进化器官） */
+function logUsage(weights,prop){
+  try{
+    const arr=JSON.parse(localStorage.getItem('civ_usage')||'[]');
+    arr.push({ts:new Date().toISOString(),weights:weights.slice(),prop:prop});
+    localStorage.setItem('civ_usage',JSON.stringify(arr.slice(-200)));
+  }catch(e){}
+}
+
+renderPresets();
+renderForces();
 </script>
 
 <!-- ===== 悬浮按钮坞：投币 + 反馈（进化器官：使用数据记录 + 导出） ===== -->
-<div id="fbDock" style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:system-ui;display:flex;gap:8px;align-items:center">
-  <button id="payBtn" onclick="document.getElementById('payCard').style.display='flex'" style="background:linear-gradient(135deg,#f0883e,#d29922);color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);font-size:13px;font-weight:600">💰 投币</button>
-  <button id="fbToggle" onclick="var p=document.getElementById('fbPanel');p.style.display=p.style.display==='none'?'block':'none'" style="background:#1f6feb;color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);font-size:13px;font-weight:600">💬 反馈</button>
-  <div id="fbPanel" style="display:none;position:absolute;bottom:48px;right:0;background:#fff;border-radius:12px;padding:14px;width:264px;box-shadow:0 4px 20px rgba(0,0,0,.25)">
+<div id="fbDock" style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:inherit;display:flex;gap:8px;align-items:center">
+  <button id="payBtn" onclick="document.getElementById('payCard').style.display='flex'" style="background:linear-gradient(135deg,#f0883e,#d29922);color:#fff;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:13px;font-weight:600">💰 投币</button>
+  <button id="fbToggle" onclick="var p=document.getElementById('fbPanel');p.style.display=p.style.display==='none'?'block':'none'" style="background:#fff;color:#1d1d1f;border:1px solid #e8e8ed;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px;font-weight:600">💬 反馈</button>
+  <div id="fbPanel" style="display:none;position:absolute;bottom:48px;right:0;background:#fff;border-radius:12px;padding:14px;width:264px;box-shadow:0 12px 40px rgba(0,0,0,.2);border:1px solid #eee">
     <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px">这次推演有用吗？</div>
     <div style="margin-bottom:8px">
       <button class="fb-rate" data-r="5" style="margin:2px;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:4px 10px;cursor:pointer">5 很有用</button>
@@ -580,7 +778,7 @@ init();
     </div>
     <textarea id="fbComment" placeholder="哪里有用/哪里不准/缺什么功能？" style="width:100%;box-sizing:border-box;height:56px;border:1px solid #ddd;border-radius:6px;padding:6px;font-size:12px;margin-bottom:8px"></textarea>
     <div style="display:flex;gap:6px">
-      <button onclick="fbSubmit()" style="flex:1;background:#1f6feb;color:#fff;border:0;border-radius:6px;padding:6px;cursor:pointer;font-size:12px">提交反馈</button>
+      <button onclick="fbSubmit()" style="flex:1;background:#0071e3;color:#fff;border:0;border-radius:6px;padding:6px;cursor:pointer;font-size:12px">提交反馈</button>
       <button onclick="fbExport()" style="flex:1;background:#f6f8fa;color:#333;border:1px solid #ddd;border-radius:6px;padding:6px;cursor:pointer;font-size:12px">导出数据</button>
     </div>
     <div id="fbStatus" style="font-size:11px;color:#888;margin-top:6px"></div>
@@ -593,8 +791,8 @@ init();
 </div>
 
 <!-- ===== 投币弹窗（收款码） ===== -->
-<div id="payCard" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:16px">
-  <div style="background:#fffdf7;border-radius:16px;padding:26px 24px 20px;max-width:320px;width:100%;text-align:center;font-family:system-ui;position:relative;box-shadow:0 16px 48px rgba(0,0,0,.4)">
+<div id="payCard" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fffdf7;border-radius:16px;padding:26px 24px 20px;max-width:320px;width:100%;text-align:center;font-family:inherit;position:relative;box-shadow:0 16px 48px rgba(0,0,0,.25)">
     <button onclick="document.getElementById('payCard').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:18px;color:#a29880;cursor:pointer;line-height:1">✕</button>
     <h3 style="margin:0 0 6px;color:#8c2f23;font-size:17px;letter-spacing:1px">请作者喝杯咖啡</h3>
     <p style="font-size:12px;color:#8a7f66;margin:0 0 14px;line-height:1.7">如果这个引擎帮到了你<br>欢迎投币支持它继续进化</p>
@@ -627,7 +825,7 @@ init();
   document.querySelectorAll('.fb-rate').forEach(function(b){
     b.onclick=function(){
       document.querySelectorAll('.fb-rate').forEach(function(x){x.style.background='#fafafa';x.style.borderColor='#ddd';x.classList.remove('sel');});
-      b.style.background='#e7f0ff';b.style.borderColor='#1f6feb';b.classList.add('sel');
+      b.style.background='#e7f0ff';b.style.borderColor='#0071e3';b.classList.add('sel');
     };
   });
 })();
