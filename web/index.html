@@ -53,37 +53,37 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .cfg-sec{margin-top:22px}
 .cfg-sec:first-child{margin-top:0}
 
-/* 预设 */
-.preset-scroll{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.preset-scroll::-webkit-scrollbar{height:5px}
-.preset-scroll::-webkit-scrollbar-thumb{background:#d2d2d7;border-radius:3px}
-.pcat{font-size:11px;font-weight:700;color:var(--txt3);margin:4px 0 0;letter-spacing:.08em;display:flex;align-items:center;gap:6px;flex-shrink:0}
-.pcat::after{content:"";height:1px;flex:1;background:var(--line);min-width:24px}
-.preset-btn{flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:148px;padding:11px 12px;background:#fbfbfd;border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:transform .18s,box-shadow .2s,border-color .2s;text-align:left;font-family:inherit}
+/* 预设分类标签 */
+.preset-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.preset-tabs::-webkit-scrollbar{display:none}
+.preset-tab{flex-shrink:0;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fbfbfd;color:var(--txt2);cursor:pointer;transition:.2s;white-space:nowrap}
+.preset-tab.active{background:var(--txt);color:#fff;border-color:var(--txt)}
+.preset-tab:hover:not(.active){border-color:#d2d2d7;background:#f5f5f7}
+
+/* 预设网格 */
+.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.preset-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px;background:#fbfbfd;border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:transform .18s,box-shadow .2s,border-color .2s;text-align:left;font-family:inherit}
 .preset-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:#d2d2d7}
 .preset-btn.active{border-color:var(--gold);background:linear-gradient(180deg,#fdfaf3,#faf5e8);box-shadow:0 4px 16px rgba(176,141,62,.18)}
-.preset-btn .pb-name{font-size:13px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.preset-btn .pb-name{font-size:13px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:5px}
 .preset-btn .pb-desc{font-size:11px;color:var(--txt3);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-/* 力场卡片 */
-.force-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.force-card{border:1px solid var(--line);border-radius:14px;padding:10px 11px;background:#fbfbfd;cursor:pointer;transition:transform .18s,box-shadow .2s,border-color .2s;position:relative;overflow:hidden}
-.force-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.force-card.on{border-width:1.5px;background:#fff}
-.force-card .fc-head{display:flex;align-items:center;gap:6px}
-.force-card .fc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.force-card .fc-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.force-card .fc-trait{font-size:10.5px;color:var(--txt3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.force-card .fc-pct{position:absolute;top:8px;right:10px;font-size:13px;font-weight:700;opacity:0;transform:scale(.7);transition:.25s}
-.force-card.on .fc-pct{opacity:1;transform:scale(1)}
-.force-card .fc-ctl{display:none;align-items:center;gap:6px;margin-top:8px}
-.force-card.on .fc-ctl{display:flex}
-.force-card .fc-ctl button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--txt);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
-.force-card .fc-ctl button:hover{background:#f2f2f7}
-.force-card .fc-ctl button:active{transform:scale(.92)}
-.force-card .fc-ctl .fc-bar{flex:1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
-.force-card .fc-ctl .fc-bar i{display:block;height:100%;border-radius:3px;transition:width .3s}
-.force-card .fc-ctl .fc-val{font-size:11px;font-weight:600;min-width:34px;text-align:right;color:var(--txt2)}
+/* 力场行 */
+.force-list{display:flex;flex-direction:column;gap:8px}
+.force-row{border:1px solid var(--line);border-radius:14px;background:#fbfbfd;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.force-row.on{background:#fff;border-width:1.5px}
+.force-row-head{display:flex;align-items:center;gap:8px;padding:13px 14px;cursor:pointer;min-height:48px}
+.force-row-head .fr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.force-row-head .fr-name{font-size:14px;font-weight:600;flex-shrink:0}
+.force-row-head .fr-trait{font-size:11.5px;color:var(--txt3);margin-left:auto;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0}
+.force-row-head .fr-pct{font-size:16px;font-weight:700;min-width:42px;text-align:right;opacity:.25;transition:.2s;flex-shrink:0}
+.force-row.on .fr-pct{opacity:1}
+.force-row-ctl{display:none;padding:0 14px 12px;gap:10px;align-items:center}
+.force-row.on .force-row-ctl{display:flex}
+.force-row-ctl input[type=range]{flex:1;height:6px;-webkit-appearance:none;appearance:none;border-radius:3px;background:var(--line);outline:none;cursor:pointer}
+.force-row-ctl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.force-row-ctl input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.force-row-ctl .fr-val{font-size:13px;font-weight:700;min-width:42px;text-align:right;color:var(--txt)}
 
 /* 解读条 */
 .readout{margin-top:10px;background:linear-gradient(135deg,#fdfaf3,#f7f2e4);border:1px solid #efe6cd;border-radius:12px;padding:9px 12px;font-size:12px;color:#6b5a2e;line-height:1.55;min-height:36px}
@@ -169,11 +169,29 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   .brand-mo{display:inline;font-size:14px;font-weight:700}
   .tb-link span{display:none}
   .tb-pill.tb-pay,.tb-pill.tb-fb{display:none}
-  .hero{padding-top:32px}
+  .hero{padding:28px 16px 6px}
+  .hero h1{font-size:24px}
+  .hero p{font-size:13px}
+  .hero-steps{gap:6px}
+  .hstep{font-size:11px;padding:5px 10px}
+  .layout{padding:14px 12px 100px}
   .config-panel{padding:16px}
   .result-panel{padding:16px}
-  .force-grid{grid-template-columns:1fr 1fr}
-  .preset-btn{width:138px}
+  .preset-grid{grid-template-columns:repeat(2,1fr)}
+  .preset-btn{padding:10px}
+  .preset-btn .pb-name{font-size:12px}
+  .preset-btn .pb-desc{font-size:10.5px}
+  .force-row-head{padding:11px 12px;min-height:44px}
+  .force-row-head .fr-name{font-size:13px}
+  .force-row-head .fr-trait{font-size:10.5px}
+  .prop-input{font-size:14px;padding:11px 12px}
+  .btn{padding:12px 8px;font-size:14px}
+  .btn-lite{padding:12px 10px}
+  .result-empty{padding:40px 16px}
+  .result-empty .re-ic{font-size:36px}
+  .layer{padding:10px 0}
+  .layer-text{font-size:13px}
+  .prompt-text{font-size:11px;max-height:180px}
 }
 </style>
 </head>
@@ -194,8 +212,8 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   <h1>让五千年审美，替你想方案</h1>
   <p>输入一个命题，选一组气质，引擎用六大文明的审美基因<br>推演出从「情绪基调」到「光影参数」的完整视觉方案。</p>
   <div class="hero-steps">
-    <span class="hstep"><b>1</b> 选气质（或直接用预设）</span>
-    <span class="hstep"><b>2</b> 说命题</span>
+    <span class="hstep"><b>1</b> 说命题</span>
+    <span class="hstep"><b>2</b> 选气质（或直接用预设）</span>
     <span class="hstep"><b>3</b> 拿方案：报告 + Prompt + 执行建议</span>
   </div>
 </header>
@@ -206,20 +224,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   <!-- 左/上：配置 -->
   <aside class="panel config-panel">
     <div class="cfg-sec">
-      <div class="cfg-title"><span class="num">1</span>从预设开始 <span style="font-weight:400;color:var(--txt3);font-size:12px">（42 个场景模板，点击即出方案）</span></div>
-      <div class="cfg-sub">按场景选一个，权重与命题自动配好；不满意再微调。</div>
-      <div id="presetWrap"></div>
-    </div>
-
-    <div class="cfg-sec">
-      <div class="cfg-title"><span class="num">2</span>自定义六大力场</div>
-      <div class="cfg-sub">点卡片加入混搭，点「− / +」调整主次，权重自动保持 100%。</div>
-      <div class="force-grid" id="forceGrid"></div>
-      <div class="readout" id="readout"></div>
-    </div>
-
-    <div class="cfg-sec">
-      <div class="cfg-title"><span class="num">3</span>创作命题</div>
+      <div class="cfg-title"><span class="num">1</span>创作命题</div>
       <div class="cfg-sub">你想让 AI 做什么？一句话说清楚即可。</div>
       <input class="prop-input" type="text" id="propInput" value="茶品牌视觉设计" placeholder="例：给手工银器工作室做产品摄影 / 雨林咖啡馆空间设计 ...">
       <div class="btn-row">
@@ -227,6 +232,20 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
         <button class="btn btn-lite" onclick="randomize()" title="随机一组气质灵感">🎲 灵感</button>
         <button class="btn btn-ghost" onclick="resetWeights()">重置</button>
       </div>
+    </div>
+
+    <div class="cfg-sec">
+      <div class="cfg-title"><span class="num">2</span>从预设开始 <span style="font-weight:400;color:var(--txt3);font-size:12px">（42 个场景模板，点击即出方案）</span></div>
+      <div class="cfg-sub">按场景选一个，权重与命题自动配好；不满意再微调。</div>
+      <div class="preset-tabs" id="presetTabs"></div>
+      <div class="preset-grid" id="presetGrid"></div>
+    </div>
+
+    <div class="cfg-sec">
+      <div class="cfg-title"><span class="num">3</span>自定义六大力场</div>
+      <div class="cfg-sub">点行加入混搭，拖滑块调整主次，权重自动保持 100%。</div>
+      <div class="force-list" id="forceList"></div>
+      <div class="readout" id="readout"></div>
     </div>
   </aside>
 
@@ -438,80 +457,122 @@ const LAYER_KEYS=['L0','L1','L2','L3','L4','L5','L6','L7','L8'];
 const DIM_NAMES={light:'光影',comp:'构图',color:'色彩',mat:'材质',rhythm:'节奏'};
 const DIM_KEYS=['light','comp','color','mat','rhythm'];
 let weights=[70,0,10,0,20,0];
+let forceExpanded=[true,false,false,false,false,false];
 
 /* ===== 预设渲染 ===== */
+let activeCat='品牌视觉';
 function renderPresets(){
-  const wrap=document.getElementById('presetWrap');
   const cats=[...new Set(PRESETS.map(p=>p.cat))];
-  let html='';
-  cats.forEach(cat=>{
-    html+=`<div class="pcat">${cat}</div><div class="preset-scroll">`;
-    PRESETS.forEach((p,i)=>{
-      if(p.cat!==cat)return;
-      html+=`<button class="preset-btn" data-idx="${i}" onclick="applyPreset(${i})"><span class="pb-name">${p.icon} ${p.name}</span><span class="pb-desc">${p.desc}</span></button>`;
-    });
-    html+=`</div>`;
-  });
-  wrap.innerHTML=html;
+  const tabsEl=document.getElementById('presetTabs');
+  tabsEl.innerHTML=cats.map(c=>`<button class="preset-tab ${c===activeCat?'active':''}" onclick="selectCategory('${c}')">${c}</button>`).join('');
+  renderPresetGrid();
+}
+function selectCategory(cat){
+  activeCat=cat;
+  document.querySelectorAll('.preset-tab').forEach(t=>t.classList.toggle('active',t.textContent===cat));
+  renderPresetGrid();
+}
+function renderPresetGrid(){
+  const grid=document.getElementById('presetGrid');
+  grid.innerHTML=PRESETS.map((p,i)=>{
+    if(p.cat!==activeCat)return '';
+    return `<button class="preset-btn" data-idx="${i}" onclick="applyPreset(${i})"><span class="pb-name">${p.icon} ${p.name}</span><span class="pb-desc">${p.desc}</span></button>`;
+  }).join('');
 }
 
-/* ===== 力场卡片渲染 ===== */
+/* ===== 力场行渲染 ===== */
 function renderForces(){
-  const grid=document.getElementById('forceGrid');
-  let html='';
-  FORCES.forEach((f,i)=>{
-    html+=`<div class="force-card ${weights[i]>0?'on':''}" id="fc${i}" onclick="toggleForce(${i})" style="border-color:${weights[i]>0?f.color+'88':'var(--line)'}">
-      <div class="fc-head"><span class="fc-dot" style="background:${f.color}"></span><span class="fc-name">${f.name.replace('力场','')}</span></div>
-      <div class="fc-trait">${f.trait}</div>
-      <div class="fc-pct" style="color:${f.color}">${weights[i]}%</div>
-      <div class="fc-ctl" onclick="event.stopPropagation()">
-        <button onclick="adjWeight(${i},-5)">−</button>
-        <div class="fc-bar"><i style="width:${weights[i]}%;background:${f.color}"></i></div>
-        <button onclick="adjWeight(${i},5)">+</button>
-        <span class="fc-val">${weights[i]}%</span>
+  const list=document.getElementById('forceList');
+  list.innerHTML=FORCES.map((f,i)=>{
+    const on=forceExpanded[i];
+    const shortName=f.name.replace('力场','');
+    return `<div class="force-row ${on?'on':''}" id="fr${i}" style="${on?'border-color:'+f.color+'88':''}">
+      <div class="force-row-head" onclick="toggleForce(${i})">
+        <span class="fr-dot" style="background:${f.color}"></span>
+        <span class="fr-name">${shortName}</span>
+        <span class="fr-trait">${f.trait}</span>
+        <span class="fr-pct" style="color:${f.color}">${weights[i]}%</span>
+      </div>
+      <div class="force-row-ctl" onclick="event.stopPropagation()">
+        <input type="range" min="0" max="100" value="${weights[i]}" oninput="adjWeight(${i},parseInt(this.value))" style="accent-color:${f.color}">
+        <span class="fr-val" id="frval${i}">${weights[i]}%</span>
       </div>
     </div>`;
-  });
-  grid.innerHTML=html;
+  }).join('');
   updateReadout();
 }
 
 /* ===== 交互 ===== */
 function toggleForce(i){
-  if(weights[i]>0){weights[i]=0;}
-  else{weights[i]=Math.max(1,Math.round(100/(weights.filter(w=>w>0).length+1)));}
-  const sum=weights.reduce((a,b)=>a+b,0);
-  if(sum!==100){weights[0]+=100-weights.reduce((a,b)=>a+b,0);if(weights[0]<0)weights[0]=0;}
+  if(forceExpanded[i]){
+    // Turn off
+    forceExpanded[i]=false;
+    weights[i]=0;
+  }else{
+    // Turn on with a proportional share
+    forceExpanded[i]=true;
+    const active=weights.filter(w=>w>0).length;
+    weights[i]=active===0?100:Math.max(5,Math.round(100/(active+1)));
+  }
+  normalizeWeights(i);
   renderForces();
   if(weights.some(w=>w>0))runEngine();
 }
-function adjWeight(i,delta){
-  const others=weights.reduce((a,b,idx)=>idx===i?a:a+b,0);
-  let target=weights[i]+delta;
-  if(target<0)target=0;
-  if(target>100)target=100;
-  const diff=target-weights[i];
-  if(others===0){weights[i]=100;renderForces();return;}
-  const newSum=weights.reduce((a,b,idx)=>idx===i?a:a+b,0)+target;
-  if(newSum===0)return;
-  weights[i]=target;
-  const over=newSum-100;
-  if(over!==0){
-    let rest=others;
+
+function adjWeight(i,target){
+  target=Math.max(0,Math.min(100,Math.round(target)));
+  const othersTotal=weights.reduce((a,b,idx)=>idx===i?a:a+b,0);
+  const remaining=100-target;
+  if(othersTotal===0||remaining===0){
+    if(remaining===0){for(let k=0;k<6;k++)if(k!==i)weights[k]=0;}
+    weights[i]=target;
+  }else{
+    weights[i]=target;
+    const scale=remaining/othersTotal;
     for(let k=0;k<6;k++){
       if(k===i)continue;
-      const share=weights[k]/rest;
-      weights[k]=Math.max(0,Math.round(weights[k]-over*share));
+      weights[k]=Math.round(weights[k]*scale);
     }
-    let s=weights.reduce((a,b)=>a+b,0);
-    if(s!==100&&weights[i]>=0){weights[i]+=100-s;weights[i]=Math.max(0,weights[i]);}
   }
-  renderForces();
+  normalizeWeights(i);
+  updateForceDisplay();
   runEngine();
+}
+
+function normalizeWeights(exclude){
+  let s=weights.reduce((a,b)=>a+b,0);
+  if(s===0)return;
+  if(s!==100){
+    // Adjust the largest non-excluded weight
+    let maxIdx=-1,maxVal=0;
+    for(let k=0;k<6;k++){
+      if(k===exclude)continue;
+      if(weights[k]>maxVal){maxVal=weights[k];maxIdx=k;}
+    }
+    if(maxIdx>=0){weights[maxIdx]+=100-s;weights[maxIdx]=Math.max(0,weights[maxIdx]);}
+    else{weights[exclude]+=100-s;weights[exclude]=Math.max(0,weights[exclude]);}
+  }
+}
+
+function updateForceDisplay(){
+  FORCES.forEach((f,i)=>{
+    const row=document.getElementById('fr'+i);
+    if(!row)return;
+    row.classList.toggle('on',forceExpanded[i]);
+    row.style.borderColor=forceExpanded[i]?f.color+'88':'';
+    const pct=row.querySelector('.fr-pct');
+    if(pct){pct.textContent=weights[i]+'%';pct.style.color=f.color;}
+    const val=document.getElementById('frval'+i);
+    if(val)val.textContent=weights[i]+'%';
+    const slider=row.querySelector('input[type=range]');
+    if(slider&&parseInt(slider.value)!==weights[i])slider.value=weights[i];
+  });
+  updateReadout();
 }
 function applyPreset(idx){
   const p=PRESETS[idx];
   weights=[...p.weights];
+  forceExpanded=weights.map(w=>w>0);
   document.getElementById('propInput').value=p.prop;
   document.querySelectorAll('.preset-btn').forEach(b=>{
     b.classList.toggle('active',parseInt(b.getAttribute('data-idx'))===idx);
@@ -520,18 +581,19 @@ function applyPreset(idx){
   runEngine();
 }
 function randomize(){
-  const pick=()=>Math.round(Math.random()*10)+5;
   let w=FORCES.map(()=>Math.random()*10);
   const t=w.reduce((a,b)=>a+b,0);
   weights=w.map(x=>Math.max(1,Math.round(x/t*100)));
   let s=weights.reduce((a,b)=>a+b,0);
   weights[0]+=100-s;if(weights[0]<0)weights[0]=0;
+  forceExpanded=weights.map(w=>w>0);
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
   renderForces();
   runEngine();
 }
 function resetWeights(){
   weights=[100,0,0,0,0,0];
+  forceExpanded=[true,false,false,false,false,false];
   document.getElementById('propInput').value='';
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
   renderForces();
@@ -540,7 +602,7 @@ function resetWeights(){
 function updateReadout(){
   const el=document.getElementById('readout');
   const act=getActiveForces();
-  if(act.length===0){el.textContent='👉 点击上方力场卡片，组合你想要的气质（可多选）';return;}
+  if(act.length===0){el.textContent='👉 点击上方力场行展开，拖滑块调整气质配比（可多选）';return;}
   const lead=act[0];
   const role=lead.weight>=40?'为主':(lead.weight>=30?'偏重':'点缀');
   let s=`以「${lead.force.name.replace('力场','')}」${role} ${lead.weight}%`;
