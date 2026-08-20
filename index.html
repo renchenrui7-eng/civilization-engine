@@ -54,8 +54,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .cfg-sec:first-child{margin-top:0}
 
 /* 预设分类标签 */
-.preset-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.preset-tabs::-webkit-scrollbar{display:none}
+.preset-tabs{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:4px}
 .preset-tab{flex-shrink:0;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fbfbfd;color:var(--txt2);cursor:pointer;transition:.2s;white-space:nowrap}
 .preset-tab.active{background:var(--txt);color:#fff;border-color:var(--txt)}
 .preset-tab:hover:not(.active){border-color:#d2d2d7;background:#f5f5f7}
@@ -87,6 +86,10 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 
 /* 解读条 */
 .readout{margin-top:10px;background:linear-gradient(135deg,#fdfaf3,#f7f2e4);border:1px solid #efe6cd;border-radius:12px;padding:9px 12px;font-size:12px;color:#6b5a2e;line-height:1.55;min-height:36px}
+.btn-confirm{width:100%;margin-top:10px;padding:12px;border-radius:14px;border:0;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;background:#e8e8ed;color:#86868b;transition:all .25s;letter-spacing:.01em}
+.btn-confirm.pending{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(0,113,227,.3);animation:pulseBlue 1.8s ease infinite}
+.btn-confirm:active{transform:scale(.97)}
+@keyframes pulseBlue{0%,100%{box-shadow:0 4px 14px rgba(0,113,227,.3)}50%{box-shadow:0 4px 22px rgba(0,113,227,.5)}}
 
 /* 输入与按钮 */
 .prop-input{width:100%;padding:12px 14px;font-size:14.5px;border:1px solid var(--line);border-radius:12px;background:#fbfbfd;color:var(--txt);font-family:inherit;transition:.2s}
@@ -246,6 +249,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
       <div class="cfg-sub">点行加入混搭，拖滑块调整主次，权重自动保持 100%。</div>
       <div class="force-list" id="forceList"></div>
       <div class="readout" id="readout"></div>
+      <button class="btn btn-confirm" id="confirmBtn" onclick="confirmForces()">✓ 确认选择，运行引擎</button>
     </div>
   </aside>
 
@@ -505,18 +509,16 @@ function renderForces(){
 /* ===== 交互 ===== */
 function toggleForce(i){
   if(forceExpanded[i]){
-    // Turn off
     forceExpanded[i]=false;
     weights[i]=0;
   }else{
-    // Turn on with a proportional share
     forceExpanded[i]=true;
     const active=weights.filter(w=>w>0).length;
     weights[i]=active===0?100:Math.max(5,Math.round(100/(active+1)));
   }
   normalizeWeights(i);
   renderForces();
-  if(weights.some(w=>w>0))runEngine();
+  markPending();
 }
 
 function adjWeight(i,target){
@@ -536,7 +538,7 @@ function adjWeight(i,target){
   }
   normalizeWeights(i);
   updateForceDisplay();
-  runEngine();
+  markPending();
 }
 
 function normalizeWeights(exclude){
@@ -579,6 +581,9 @@ function applyPreset(idx){
   });
   renderForces();
   runEngine();
+  const btn=document.getElementById('confirmBtn');
+  btn.classList.remove('pending');
+  btn.textContent='✓ 已运行，如需调整可继续修改';
 }
 function randomize(){
   let w=FORCES.map(()=>Math.random()*10);
@@ -590,6 +595,9 @@ function randomize(){
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
   renderForces();
   runEngine();
+  const btn=document.getElementById('confirmBtn');
+  btn.classList.remove('pending');
+  btn.textContent='✓ 已运行，如需调整可继续修改';
 }
 function resetWeights(){
   weights=[100,0,0,0,0,0];
@@ -598,11 +606,29 @@ function resetWeights(){
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
   renderForces();
   showEmpty();
+  markPending();
+}
+function markPending(){
+  const btn=document.getElementById('confirmBtn');
+  if(weights.some(w=>w>0)){
+    btn.classList.add('pending');
+    btn.textContent='✓ 确认选择，运行引擎';
+  }else{
+    btn.classList.remove('pending');
+    btn.textContent='请至少选择一个力场';
+  }
+}
+function confirmForces(){
+  if(!weights.some(w=>w>0)){alert('请至少选择一个力场');return;}
+  runEngine();
+  const btn=document.getElementById('confirmBtn');
+  btn.classList.remove('pending');
+  btn.textContent='✓ 已运行，如需调整可继续修改';
 }
 function updateReadout(){
   const el=document.getElementById('readout');
   const act=getActiveForces();
-  if(act.length===0){el.textContent='👉 点击上方力场行展开，拖滑块调整气质配比（可多选）';return;}
+  if(act.length===0){el.textContent='👉 点击力场行展开，拖滑块调整配比（可多选），完成后点下方「确认选择」';return;}
   const lead=act[0];
   const role=lead.weight>=40?'为主':(lead.weight>=30?'偏重':'点缀');
   let s=`以「${lead.force.name.replace('力场','')}」${role} ${lead.weight}%`;
@@ -823,6 +849,7 @@ function logUsage(weights,prop){
 
 renderPresets();
 renderForces();
+markPending();
 </script>
 
 <!-- ===== 悬浮按钮坞：投币 + 反馈（进化器官：使用数据记录 + 导出） ===== -->
